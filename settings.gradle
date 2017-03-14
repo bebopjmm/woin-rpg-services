@@ -1,1 +1,3 @@
 include ':woin-core'
+include ':woin-characterReferenceData-service'
+
