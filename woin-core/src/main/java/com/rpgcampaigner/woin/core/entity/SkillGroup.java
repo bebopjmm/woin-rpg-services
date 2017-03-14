@@ -1,5 +1,6 @@
 package com.rpgcampaigner.woin.core.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class SkillGroup {
 
 	private String name;
 
-	private Set<Skill> skillSet;
+	private Set<Skill> skillSet = new HashSet<>();
 
 	public UUID getId() {
 		return id;
