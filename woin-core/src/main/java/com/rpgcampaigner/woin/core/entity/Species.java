@@ -1,5 +1,7 @@
 package com.rpgcampaigner.woin.core.entity;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,9 +17,15 @@ public class Species {
 
 	private String name;
 
-	private Set<CreatureSize> sizeOptions;
+	private Set<CreatureSize> sizeOptions = new HashSet<>();
 
-	private Set<Modifier> attributeModifiers;
+	private Map<AttributeEnum, Modifier> fixedAttributeModifiers;
+
+	private Set<Modifier> selectionAttributeModifiers = new HashSet<>();
+
+	private Set<Skill> skillOptionSet = new HashSet<>();
+
+	private Set<SkillGroup> skillGroupOptionSet = new HashSet<>();
 
 	public UUID getId() {
 		return id;
@@ -43,11 +51,35 @@ public class Species {
 		this.sizeOptions = sizeOptions;
 	}
 
-	public Set<Modifier> getAttributeModifiers() {
-		return attributeModifiers;
+	public Set<Skill> getSkillOptionSet() {
+		return skillOptionSet;
 	}
 
-	public void setAttributeModifiers(Set<Modifier> attributeModifiers) {
-		this.attributeModifiers = attributeModifiers;
+	public void setSkillOptionSet(Set<Skill> skillOptionSet) {
+		this.skillOptionSet = skillOptionSet;
+	}
+
+	public Set<SkillGroup> getSkillGroupOptionSet() {
+		return skillGroupOptionSet;
+	}
+
+	public void setSkillGroupOptionSet(Set<SkillGroup> skillGroupOptionSet) {
+		this.skillGroupOptionSet = skillGroupOptionSet;
+	}
+
+	public Map<AttributeEnum, Modifier> getFixedAttributeModifiers() {
+		return fixedAttributeModifiers;
+	}
+
+	public void setFixedAttributeModifiers(Map<AttributeEnum, Modifier> fixedAttributeModifiers) {
+		this.fixedAttributeModifiers = fixedAttributeModifiers;
+	}
+
+	public Set<Modifier> getSelectionAttributeModifiers() {
+		return selectionAttributeModifiers;
+	}
+
+	public void setSelectionAttributeModifiers(Set<Modifier> selectionAttributeModifiers) {
+		this.selectionAttributeModifiers = selectionAttributeModifiers;
 	}
 }
