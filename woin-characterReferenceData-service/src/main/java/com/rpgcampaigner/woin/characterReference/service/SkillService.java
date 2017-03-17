@@ -1,9 +1,9 @@
 package com.rpgcampaigner.woin.characterReference.service;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
+import com.rpgcampaigner.woin.characterReference.domain.ReferenceManager;
+import com.rpgcampaigner.woin.characterReference.model.NamedDefinition;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 
@@ -14,30 +14,31 @@ import io.advantageous.qbit.annotation.RequestMethod;
  * @author jmccormick
  * @since 3/14/17
  */
-@RequestMapping(value = "/woin/characterReference/skills")
+@RequestMapping("/woin/characterReference/skills")
 public class SkillService {
 
-	static Set<SkillGroup> skillGroups = new HashSet<>();
+	private ReferenceManager referenceManager;
 
-	static {
-		SkillGroup sample = new SkillGroup();
-		sample.setId(UUID.randomUUID());
-		sample.setName("Academic");
-		skillGroups.add(sample);
-		Skill skill = new Skill();
-		skill.setId(UUID.randomUUID());
-		skill.setName("literature");
-		sample.getSkillSet().add(skill);
+	public SkillService(ReferenceManager referenceManager) {
+		this.referenceManager = referenceManager;
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public Set<SkillGroup> getAllSkillGroups() {
-		Set<SkillGroup> results = new HashSet<>();
+		return referenceManager.getSkillGroups();
+	}
 
-		results.addAll(skillGroups);
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public Skill addSkill(final NamedDefinition definition) {
+		Skill skill = new Skill(definition.getName());
+		referenceManager.addSkill(skill);
+		return skill;
+	}
 
-		// TODO lookup current SkillGroups
-
-		return results;
+	@RequestMapping(value = "/groups/", method = RequestMethod.POST)
+	public SkillGroup addSkillGroup(final NamedDefinition definition) {
+		SkillGroup skillGroup = new SkillGroup(definition.getName());
+		referenceManager.addSkillGroup(skillGroup);
+		return skillGroup;
 	}
 }

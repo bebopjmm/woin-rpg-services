@@ -13,17 +13,22 @@ import java.util.UUID;
  */
 public class SkillGroup {
 
-	private UUID id;
+	private String id;
 
 	private String name;
 
 	private Set<Skill> skillSet = new HashSet<>();
 
-	public UUID getId() {
+	public SkillGroup (String name) {
+		this.id = "skillGroup::" + name;
+		this.name = name;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
