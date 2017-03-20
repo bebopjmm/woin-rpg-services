@@ -21,9 +21,7 @@ public class ReferenceManager {
 	}
 
 	public Set<SkillGroup> getSkillGroups() {
-		repository.getSkillGroups();
-		// FIXME this will go away once repo hookup complete
-		return skillGroups;
+		return repository.getSkillGroups();
 	}
 
 	public void addSkill(Skill skill) {
@@ -32,14 +30,5 @@ public class ReferenceManager {
 
 	public void addSkillGroup(SkillGroup skillGroup) {
 		repository.addSkillGroup(skillGroup);
-	}
-
-	static Set<SkillGroup> skillGroups = new HashSet<>();
-
-	static {
-		SkillGroup sample = new SkillGroup("Academic");
-		skillGroups.add(sample);
-		Skill skill = new Skill("literature");
-		sample.getSkillSet().add(skill);
 	}
 }
