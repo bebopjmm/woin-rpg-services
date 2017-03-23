@@ -1,5 +1,6 @@
 package com.rpgcampaigner.woin.characterReference.dal;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -14,6 +15,9 @@ import com.couchbase.client.java.query.N1qlQueryRow;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 
+import io.advantageous.boon.core.Str;
+import io.advantageous.boon.core.Sys;
+
 import static com.couchbase.client.java.query.Select.select;
 import static com.couchbase.client.java.query.dsl.Expression.i;
 import static com.couchbase.client.java.query.dsl.Expression.s;
@@ -24,6 +28,9 @@ import static com.couchbase.client.java.query.dsl.Expression.x;
  * @since 3/17/17
  */
 public class ReferenceRepository {
+
+	// TODO Caching of Skills and SkillGroups
+
 	private static final String TYPE_SKILLGROUP = "skillGroup";
 	private static final String TYPE_SKILL = "skill";
 	private static final String FIELD_NAME = "name";
@@ -36,7 +43,7 @@ public class ReferenceRepository {
 
 	public Set<SkillGroup> getAllSkillGroups() {
 		N1qlQueryResult result = referenceBucket
-				.query(select(FIELD_NAME).from(i(referenceBucket.name())).where(x("type").eq(s(TYPE_SKILLGROUP))));
+				.query(select("*").from(i(referenceBucket.name())).where(x("type").eq(s(TYPE_SKILLGROUP))));
 		System.out.println("total results for getAllSkillGroups = " + result.allRows().size());
 		return result.allRows().stream()
 				.map(extractToSkillGroup)
@@ -71,6 +78,8 @@ public class ReferenceRepository {
 	}
 
 	public void createSkill(Skill skill) {
+		Objects.requireNonNull(skill);
+
 		JsonObject skillData = JsonObject.create()
 				.put("type", TYPE_SKILL)
 				.put(FIELD_NAME, skill.getName());
@@ -79,15 +88,41 @@ public class ReferenceRepository {
 	}
 
 	public void createSkillGroup(SkillGroup skillGroup) {
-		JsonObject skillGroupData = JsonObject.create()
-				.put("type", TYPE_SKILLGROUP)
-				.put(FIELD_NAME, skillGroup.getName());
-		JsonDocument doc = JsonDocument.create(TYPE_SKILLGROUP + "::" + skillGroup.getName(), skillGroupData);
+		Objects.requireNonNull(skillGroup);
+
+		JsonDocument doc = JsonDocument.create(
+				TYPE_SKILLGROUP + "::" + skillGroup.getName(),
+				convertSkillGroup.apply(skillGroup));
 		referenceBucket.insert(doc);
+	}
+
+	public void updateSkillGroup(SkillGroup skillGroup) {
+		Objects.requireNonNull(skillGroup);
+
+		JsonDocument doc = JsonDocument.create(
+				TYPE_SKILLGROUP + "::" + skillGroup.getName(),
+				convertSkillGroup.apply(skillGroup));
+		referenceBucket.replace(doc);
 	}
 
 	Function<N1qlQueryRow, Skill> extractToSkill = row -> new Skill(row.value().getString(FIELD_NAME));
 
-	Function<N1qlQueryRow, SkillGroup> extractToSkillGroup = row -> new SkillGroup(row.value().getString(FIELD_NAME));
+	Function<N1qlQueryRow, SkillGroup> extractToSkillGroup = row -> {
+		JsonObject groupObject = (JsonObject)row.value().get(referenceBucket.name());
+
+		SkillGroup group = new SkillGroup(groupObject.getString(FIELD_NAME));
+		Optional.ofNullable(groupObject.getArray("skillSet"))
+				.ifPresent(skillSet ->
+							skillSet.forEach(skillName -> group.getSkillSet().add(getSkill((String) skillName))));
+		return group;
+	};
+
+	Function<SkillGroup, JsonObject> convertSkillGroup = group -> {
+		List<String> skillNames = group.getSkillSet().stream().map(skill -> skill.getName()).collect(Collectors.toList());
+		return JsonObject.create()
+				.put("type", TYPE_SKILLGROUP)
+				.put(FIELD_NAME, group.getName())
+				.put("skillSet", skillNames);
+	};
 
 }

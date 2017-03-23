@@ -1,11 +1,13 @@
 package com.rpgcampaigner.woin.characterReference.service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
 import com.rpgcampaigner.woin.characterReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.characterReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.characterReference.model.NamedDefinition;
+import com.rpgcampaigner.woin.characterReference.model.SkillGroupUpdateDefinition;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 
@@ -85,8 +87,25 @@ public class SkillService {
 		return result;
 	}
 
-	// TODO add a skill to a skillGroup
+	@RequestMapping(value = "/groups/{name}", method = RequestMethod.PUT)
+	public SkillGroup updateSkillGroup(
+			@PathVariable("name") String name,
+			SkillGroupUpdateDefinition changes) {
+		Objects.requireNonNull(name);
+		Objects.requireNonNull(changes);
 
+		SkillGroup skillGroup = Optional.ofNullable(referenceRepository.getSkillGroup(name))
+				.orElseThrow(() -> new IllegalArgumentException("SkillGroup does not exist: " + name));
 
-	// TODO remove a skill from a skillGroup
+		for (String addSkillName : changes.getAddSkills()) {
+			Optional.ofNullable(referenceRepository.getSkill(addSkillName))
+					.ifPresent(skill -> skillGroup.getSkillSet().add(skill));
+		}
+		for (String removeSkillName : changes.getRemoveSkills()) {
+			Optional.ofNullable(referenceRepository.getSkill(removeSkillName))
+					.ifPresent(skill -> skillGroup.getSkillSet().remove(skill));
+		}
+		referenceRepository.updateSkillGroup(skillGroup);
+		return skillGroup;
+	}
 }

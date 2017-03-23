@@ -32,7 +32,4 @@ public class SkillGroup {
 		return skillSet;
 	}
 
-	public void setSkillSet(Set<Skill> skillSet) {
-		this.skillSet = skillSet;
-	}
 }
