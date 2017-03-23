@@ -64,6 +64,9 @@ public class SkillService {
 	 *************************************/
 
 	/**
+	 * TODO Support specifying skills that are part of the group and automatically create them as well if they don't
+	 * exist
+	 *
 	 * @param definition
 	 * @return
 	 */

@@ -15,9 +15,6 @@ import com.couchbase.client.java.query.N1qlQueryRow;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 
-import io.advantageous.boon.core.Str;
-import io.advantageous.boon.core.Sys;
-
 import static com.couchbase.client.java.query.Select.select;
 import static com.couchbase.client.java.query.dsl.Expression.i;
 import static com.couchbase.client.java.query.dsl.Expression.s;
@@ -56,7 +53,7 @@ public class ReferenceRepository {
 		JsonDocument doc = referenceBucket.get(TYPE_SKILLGROUP + "::" + name);
 		return doc == null ?
 				null :
-				new SkillGroup(doc.content().getString("name"));
+				buildSkillGroup.apply(doc.content());
 	}
 
 	public Set<Skill> getAllSkills() {
@@ -107,15 +104,20 @@ public class ReferenceRepository {
 
 	Function<N1qlQueryRow, Skill> extractToSkill = row -> new Skill(row.value().getString(FIELD_NAME));
 
-	Function<N1qlQueryRow, SkillGroup> extractToSkillGroup = row -> {
-		JsonObject groupObject = (JsonObject)row.value().get(referenceBucket.name());
-
-		SkillGroup group = new SkillGroup(groupObject.getString(FIELD_NAME));
-		Optional.ofNullable(groupObject.getArray("skillSet"))
+	Function<JsonObject, SkillGroup> buildSkillGroup = json -> {
+		SkillGroup group = new SkillGroup(json.getString(FIELD_NAME));
+		Optional.ofNullable(json.getArray("skillSet"))
 				.ifPresent(skillSet ->
-							skillSet.forEach(skillName -> group.getSkillSet().add(getSkill((String) skillName))));
+						skillSet.forEach(skillName -> group.getSkillSet().add(getSkill((String) skillName))));
 		return group;
 	};
+
+	Function<N1qlQueryRow, SkillGroup> extractToSkillGroup = row -> {
+		JsonObject groupObject = (JsonObject) row.value().get(referenceBucket.name());
+		return buildSkillGroup.apply(groupObject);
+	};
+
+
 
 	Function<SkillGroup, JsonObject> convertSkillGroup = group -> {
 		List<String> skillNames = group.getSkillSet().stream().map(skill -> skill.getName()).collect(Collectors.toList());
