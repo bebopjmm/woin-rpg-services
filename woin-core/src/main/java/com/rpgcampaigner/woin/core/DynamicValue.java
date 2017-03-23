@@ -36,10 +36,10 @@ public class DynamicValue implements ModifierListener {
 	 * Instantiates a new DynamicValue, setting both base and current values to the provided
 	 * baseValue.
 	 *
-	 * @param baseValue the base value without any modifiers
+	 * @param baseValue
+	 * 		the base value without any modifiers
 	 */
-	public DynamicValue(int baseValue)
-	{
+	public DynamicValue(int baseValue) {
 		this.baseValue = baseValue;
 		this.currentValue = baseValue;
 	}

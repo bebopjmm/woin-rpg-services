@@ -1,8 +1,8 @@
 package com.rpgcampaigner.woin.characterReference.domain;
 
-import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import com.rpgcampaigner.woin.characterReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.core.entity.Skill;
@@ -21,14 +21,30 @@ public class ReferenceManager {
 	}
 
 	public Set<SkillGroup> getSkillGroups() {
-		return repository.getSkillGroups();
+		return repository.getAllSkillGroups();
 	}
 
-	public void addSkill(Skill skill) {
-		repository.addSkill(skill);
+	public Set<Skill> getSkills() {
+		return repository.getAllSkills();
 	}
 
-	public void addSkillGroup(SkillGroup skillGroup) {
-		repository.addSkillGroup(skillGroup);
+	public Optional<Skill> getSkill(final String skillId) {
+		Objects.requireNonNull(skillId);
+		return Optional.ofNullable(repository.getSkill(skillId));
+	}
+
+	public void createSkill(Skill skill) {
+		repository.createSkill(skill);
+	}
+
+	public void createSkillGroup(SkillGroup skillGroup) {
+		repository.createSkillGroup(skillGroup);
+	}
+
+	public SkillGroup addSkillToGroup(final String skillId, final String skillGroupId) {
+		Objects.requireNonNull(skillId);
+		Objects.requireNonNull(skillGroupId);
+
+		return null;
 	}
 }

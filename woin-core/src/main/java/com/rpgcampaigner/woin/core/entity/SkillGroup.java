@@ -2,7 +2,6 @@ package com.rpgcampaigner.woin.core.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * SkillGroup is a reference data class that categorizes a set of specific skills. This is most typically used a a
@@ -13,23 +12,12 @@ import java.util.UUID;
  */
 public class SkillGroup {
 
-	private String id;
-
 	private String name;
 
 	private Set<Skill> skillSet = new HashSet<>();
 
-	public SkillGroup (String name) {
-		this.id = "skillGroup::" + name;
+	public SkillGroup(String name) {
 		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {

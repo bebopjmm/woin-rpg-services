@@ -19,7 +19,7 @@ public class Application {
 		ReferenceRepository referenceRepository = new ReferenceRepository(databaseConfiguration.getReferenceBucket());
 		ReferenceManager referenceManager = new ReferenceManager(referenceRepository);
 		ServiceEndpointServer server = new EndpointServerBuilder().build();
-		server.initServices(new SkillService(referenceManager));
+		server.initServices(new SkillService(referenceManager, referenceRepository));
 		server.start();
 	}
 }
