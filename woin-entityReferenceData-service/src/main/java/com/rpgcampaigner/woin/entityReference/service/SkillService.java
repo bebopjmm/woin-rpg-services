@@ -3,10 +3,12 @@ package com.rpgcampaigner.woin.entityReference.service;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.entityReference.model.NamedDefinition;
+import com.rpgcampaigner.woin.entityReference.model.SkillGroupCreateDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupUpdateDefinition;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
@@ -41,9 +43,7 @@ public class SkillService {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public Skill createSkill(final NamedDefinition definition) {
-		Skill skill = new Skill(definition.getName());
-		referenceRepository.createSkill(skill);
-		return skill;
+		return createSkill.apply(definition.getName());
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -59,6 +59,12 @@ public class SkillService {
 		return result;
 	}
 
+	final Function<String, Skill> createSkill = name -> {
+		Skill skill = new Skill(name);
+		referenceRepository.createSkill(skill);
+		return skill;
+	};
+
 	/*************************************
 	 * SKILLGROUP SERVICE CALLS
 	 *************************************/
@@ -71,8 +77,12 @@ public class SkillService {
 	 * @return
 	 */
 	@RequestMapping(value = "/groups/", method = RequestMethod.POST)
-	public SkillGroup createSkillGroup(final NamedDefinition definition) {
+	public SkillGroup createSkillGroup(final SkillGroupCreateDefinition definition) {
 		SkillGroup skillGroup = new SkillGroup(definition.getName());
+		for (String addSkillName : definition.getSkills()) {
+			skillGroup.getSkillSet().add(Optional.ofNullable(referenceRepository.getSkill(addSkillName))
+					.orElse(createSkill.apply(addSkillName)));
+		}
 		referenceRepository.createSkillGroup(skillGroup);
 		return skillGroup;
 	}

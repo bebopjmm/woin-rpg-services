@@ -8,9 +8,9 @@ import java.util.Set;
  * @since 3/27/17
  */
 public class SkillGroupCreateDefinition extends NamedDefinition {
-	private Set<String> skillSet = new HashSet<>();
+	private Set<String> skills = new HashSet<>();
 
-	public Set<String> getSkillSet() {
-		return skillSet;
+	public Set<String> getSkills() {
+		return skills;
 	}
 }
