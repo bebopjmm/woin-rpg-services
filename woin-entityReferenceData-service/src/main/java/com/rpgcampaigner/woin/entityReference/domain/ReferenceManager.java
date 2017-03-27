@@ -1,10 +1,10 @@
-package com.rpgcampaigner.woin.characterReference.domain;
+package com.rpgcampaigner.woin.entityReference.domain;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import com.rpgcampaigner.woin.characterReference.dal.ReferenceRepository;
+import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 

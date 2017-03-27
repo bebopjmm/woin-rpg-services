@@ -1,4 +1,4 @@
-package com.rpgcampaigner.woin.characterReference.dal;
+package com.rpgcampaigner.woin.entityReference.dal;
 
 import java.util.List;
 import java.util.Objects;

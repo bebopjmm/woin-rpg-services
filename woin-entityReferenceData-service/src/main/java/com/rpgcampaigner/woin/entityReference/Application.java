@@ -1,9 +1,9 @@
-package com.rpgcampaigner.woin.characterReference;
+package com.rpgcampaigner.woin.entityReference;
 
-import com.rpgcampaigner.woin.characterReference.dal.DatabaseConfiguration;
-import com.rpgcampaigner.woin.characterReference.dal.ReferenceRepository;
-import com.rpgcampaigner.woin.characterReference.domain.ReferenceManager;
-import com.rpgcampaigner.woin.characterReference.service.SkillService;
+import com.rpgcampaigner.woin.entityReference.dal.DatabaseConfiguration;
+import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
+import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
+import com.rpgcampaigner.woin.entityReference.service.SkillService;
 
 import io.advantageous.qbit.server.EndpointServerBuilder;
 import io.advantageous.qbit.server.ServiceEndpointServer;

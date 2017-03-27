@@ -1,4 +1,4 @@
-package com.rpgcampaigner.woin.characterReference.model;
+package com.rpgcampaigner.woin.entityReference.model;
 
 import java.util.HashSet;
 import java.util.Set;

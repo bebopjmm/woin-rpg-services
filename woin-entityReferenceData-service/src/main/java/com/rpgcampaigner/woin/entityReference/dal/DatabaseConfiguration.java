@@ -1,4 +1,4 @@
-package com.rpgcampaigner.woin.characterReference.dal;
+package com.rpgcampaigner.woin.entityReference.dal;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;

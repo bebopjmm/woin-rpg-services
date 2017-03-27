@@ -1,4 +1,4 @@
-package com.rpgcampaigner.woin.characterReference.model;
+package com.rpgcampaigner.woin.entityReference.model;
 
 /**
  * @author jmccormick
