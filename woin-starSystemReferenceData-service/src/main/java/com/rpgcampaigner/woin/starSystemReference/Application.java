@@ -1,5 +1,7 @@
 package com.rpgcampaigner.woin.starSystemReference;
 
+import com.rpgcampaigner.woin.starSystemReference.service.StellarReferenceService;
+
 import io.advantageous.qbit.server.EndpointServerBuilder;
 import io.advantageous.qbit.server.ServiceEndpointServer;
 
@@ -9,12 +11,8 @@ import io.advantageous.qbit.server.ServiceEndpointServer;
  */
 public class Application {
 	public static void main(String[] args) throws Exception {
-//		DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration("localhost", "woin-reference");
-//		ReferenceRepository referenceRepository = new ReferenceRepository(databaseConfiguration.getReferenceBucket());
-//		ReferenceManager referenceManager = new ReferenceManager(referenceRepository);
-//		ServiceEndpointServer server = new EndpointServerBuilder().build();
-//		server.initServices(new SkillService(referenceManager, referenceRepository));
-//		server.start();
-		System.out.println("Hello");
+		ServiceEndpointServer server = new EndpointServerBuilder().build();
+		server.initServices(new StellarReferenceService());
+		server.start();
 	}
 }

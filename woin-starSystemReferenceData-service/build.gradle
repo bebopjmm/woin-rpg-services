@@ -6,9 +6,6 @@ dependencies {
     compile project(':woin-core')
     compile 'io.advantageous.qbit:qbit-admin:1.10.0.RELEASE'
     compile 'io.advantageous.qbit:qbit-vertx:1.10.0.RELEASE'
-//    compile('org.springframework.boot:spring-boot-starter-web:1.5.1.RELEASE') {
-//        exclude module: 'spring-boot-starter-tomcat'
-//    }
-    compile('com.couchbase.client:java-client:2.4.3')
+//    compile('com.couchbase.client:java-client:2.4.3')
     testCompile 'junit:junit:4.11'
 }
