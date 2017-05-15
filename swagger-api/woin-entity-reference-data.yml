@@ -1,0 +1,59 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.1.0"
+  title: WOIN Character Reference Data Service
+  description: This API provides methods related to defining reference data used in creating characters within the WOIN game system
+  contact:
+    id: John McCormick
+    email: john.m.mccormick.ii@icloud.com
+  
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /skills:
+    get:
+      description: |
+        Gets SkillDefinitions organized by SkillGroups.
+      responses:
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: ArrayOfSkillGroups
+            type: array
+            items:
+              $ref: '#/definitions/skillGroup'
+definitions:
+  skill:
+    type: object
+    required:
+      - id
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+      id:
+        type: string
+  skillGroup:
+    type: object
+    required:
+      - id
+      - id
+      - skillSet
+    properties:
+      id:
+        type: integer
+        format: int64
+      id:
+        type: string
+      skillSet:
+        type: array
+        items:
+          $ref: '#/definitions/skill'

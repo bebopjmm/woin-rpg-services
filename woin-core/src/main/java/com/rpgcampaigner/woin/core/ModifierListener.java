@@ -6,10 +6,8 @@ package com.rpgcampaigner.woin.core;
  *
  * @author bebopjmm
  * @since 11/15/16
- *
  */
-public interface ModifierListener
-{
+public interface ModifierListener {
 
 	/**
 	 * This method will be invoked when an Modifier changes value.
