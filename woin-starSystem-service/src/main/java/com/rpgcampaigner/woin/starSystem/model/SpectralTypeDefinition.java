@@ -1,10 +1,10 @@
-package com.rpgcampaigner.woin.starSystemReference.model;
+package com.rpgcampaigner.woin.starSystem.model;
 
 import com.rpgcampaigner.woin.core.universe.SpectralType;
 
 /**
  * This custom output definition is needed to get all the metadata captured in the SpectralType enumeration
- * 
+ *
  * @author jmccormick
  * @since 5/15/17
  */

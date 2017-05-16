@@ -1,6 +1,6 @@
-package com.rpgcampaigner.woin.starSystemReference;
+package com.rpgcampaigner.woin.starSystem;
 
-import com.rpgcampaigner.woin.starSystemReference.service.StellarReferenceService;
+import com.rpgcampaigner.woin.starSystem.service.StarSystemService;
 
 import io.advantageous.qbit.server.EndpointServerBuilder;
 import io.advantageous.qbit.server.ServiceEndpointServer;
@@ -12,7 +12,7 @@ import io.advantageous.qbit.server.ServiceEndpointServer;
 public class Application {
 	public static void main(String[] args) throws Exception {
 		ServiceEndpointServer server = new EndpointServerBuilder().build();
-		server.initServices(new StellarReferenceService());
+		server.initServices(new StarSystemService());
 		server.start();
 	}
 }

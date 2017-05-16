@@ -19,7 +19,7 @@ public enum SpectralType {
 	C ("carbon star"),
 	S ("cool giant"),
 	D ("white dwarf, degenerate"),
-	Xi ("neutorn star"),
+	Xi ("neutron star"),
 	Xii ("quark star"),
 	Xiii ("black hole"),
 	Xiv ("dark star"),
