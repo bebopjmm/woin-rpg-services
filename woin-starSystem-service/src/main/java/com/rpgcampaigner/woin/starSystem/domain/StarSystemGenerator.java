@@ -17,36 +17,22 @@ import com.rpgcampaigner.woin.core.universe.StarSystem;
  * @since 5/16/17
  */
 public class StarSystemGenerator {
+	private StarSystemGeneratorConfig config;
+
+	public StarSystemGenerator(StarSystemGeneratorConfig config) {
+		this.config = config;
+	}
 
 	Function<Integer, Float> auDistance = i -> {
-		switch (i) {
-			case 1:
-				return 10.0f/350.0f;
-			case 2:
-				return 25.0f/350.0f;
-			case 3:
-				return 50.0f/350.0f;
-			case 4:
-				return 100.0f/350.0f;
-			case 5:
-				return 200.0f/350.0f;
-			case 6:
-				return 1.0f;
-			case 7:
-				return 1.2f;
-			case 8:
-				return 1.5f;
-			case 9:
-				return 2.0f;
-			case 10:
-				return 3.0f;
-			case 11:
-				return 4.0f;
-			case 12:
-				return 5.0f;
-			default:
-				return 2500.0f + (i-48)*500.0f;
+		if (i<1) {
+			throw new IllegalArgumentException("auDistance input value must be a positive integer");
 		}
+		int maxIndex = config.maxAuDistanceIndex();
+		if (i > maxIndex) {
+			int delta = i - maxIndex;
+			return config.getAuDistanceMap().get(maxIndex) + delta * config.getAuDistanceIncrement();
+		}
+		return config.getAuDistanceMap().get(i);
 	};
 
 	public Supplier<Star> randomStar = () -> {

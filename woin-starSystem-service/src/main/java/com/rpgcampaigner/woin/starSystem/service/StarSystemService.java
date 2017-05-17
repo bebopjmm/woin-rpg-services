@@ -25,7 +25,11 @@ public class StarSystemService {
 				spectralTypeDefinitions.add(new SpectralTypeDefinition(spectralType)));
 	}
 
-	private StarSystemGenerator starSystemGenerator = new StarSystemGenerator();
+	private StarSystemGenerator starSystemGenerator;
+
+	public StarSystemService(StarSystemGenerator generator) {
+		this.starSystemGenerator = generator;
+	}
 
 	@RequestMapping(value = "/spectralClasses", method = RequestMethod.GET)
 	public Set<SpectralTypeDefinition> getSpectralTypes() {
