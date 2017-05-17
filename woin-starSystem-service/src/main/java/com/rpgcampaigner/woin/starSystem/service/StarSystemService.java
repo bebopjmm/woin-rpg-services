@@ -36,6 +36,6 @@ public class StarSystemService {
 	@RequestMapping(value = "/generate", method = RequestMethod.GET)
 	public StarSystem generate() {
 		System.out.println("Generating a star system");
-		return new StarSystem();
+		return starSystemGenerator.randomStarSystem.get();
 	}
 }
