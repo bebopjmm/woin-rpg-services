@@ -14,6 +14,15 @@ public class StarSystemGeneratorConfig {
 
 	private float auDistanceIncrement;
 
+	private Map<Integer, String> starNamesPt1 = new HashMap<>();
+
+	private Map<Integer, String> starNamesPt2a = new HashMap<>();
+
+	private Map<Integer, String> starNamesPt2b= new HashMap<>();
+
+	private Map<Integer, String> starNamesPt2c = new HashMap<>();
+
+
 	public Map<Integer, Float> getAuDistanceMap() {
 		return auDistanceMap;
 	}
@@ -32,5 +41,37 @@ public class StarSystemGeneratorConfig {
 
 	public void setAuDistanceIncrement(float auDistanceIncrement) {
 		this.auDistanceIncrement = auDistanceIncrement;
+	}
+
+	public Map<Integer, String> getStarNamesPt1() {
+		return starNamesPt1;
+	}
+
+	public void setStarNamesPt1(Map<Integer, String> starNamesPt1) {
+		this.starNamesPt1 = starNamesPt1;
+	}
+
+	public Map<Integer, String> getStarNamesPt2a() {
+		return starNamesPt2a;
+	}
+
+	public void setStarNamesPt2a(Map<Integer, String> starNamesPt2a) {
+		this.starNamesPt2a = starNamesPt2a;
+	}
+
+	public Map<Integer, String> getStarNamesPt2b() {
+		return starNamesPt2b;
+	}
+
+	public void setStarNamesPt2b(Map<Integer, String> starNamesPt2b) {
+		this.starNamesPt2b = starNamesPt2b;
+	}
+
+	public Map<Integer, String> getStarNamesPt2c() {
+		return starNamesPt2c;
+	}
+
+	public void setStarNamesPt2c(Map<Integer, String> starNamesPt2c) {
+		this.starNamesPt2c = starNamesPt2c;
 	}
 }

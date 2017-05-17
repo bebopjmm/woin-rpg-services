@@ -38,6 +38,22 @@ public class StarSystemGenerator {
 
 	public Supplier<Star> randomStar = () -> {
 		Star randomStar = new Star();
+		// Generate a name
+		StringBuilder nameBuilder = new StringBuilder();
+		nameBuilder.append(config.getStarNamesPt1().get(Dice.rollD66()) + " ");
+		switch (Dice.rollD6()) {
+			case 1:case 2:
+				nameBuilder.append(config.getStarNamesPt2a().get(Dice.rollD66()));
+				break;
+			case 3:case 4:
+				nameBuilder.append(config.getStarNamesPt2b().get(Dice.rollD66()));
+				break;
+			case 5:case 6:
+				nameBuilder.append(config.getStarNamesPt2c().get(Dice.rollD66()));
+		}
+
+		// Generate size and luminosity
+		randomStar.setName(nameBuilder.toString());
 		switch (Dice.rollD66()) {
 			case 11:
 				randomStar.setSize(StarSize.MAIN_SEQUENCE);
@@ -156,8 +172,7 @@ public class StarSystemGenerator {
 			default:
 				throw new IllegalArgumentException("Invalid d66 value");
 		}
-		// TODO Name Generation
-		randomStar.setName("Procis Aventurn");
+
 		return randomStar;
 	};
 
