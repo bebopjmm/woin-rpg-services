@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.rpgcampaigner.woin.core.Dice;
 import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
 import com.rpgcampaigner.woin.core.universe.PlanetaryType;
 import com.rpgcampaigner.woin.core.universe.RockyPlanet;
@@ -37,7 +38,7 @@ public class StarSystemGenerator {
 
 	public Supplier<Star> randomStar = () -> {
 		Star randomStar = new Star();
-		switch (rollD66()) {
+		switch (Dice.rollD66()) {
 			case 11:
 				randomStar.setSize(StarSize.MAIN_SEQUENCE);
 				randomStar.setSpectralType(SpectralType.A);
@@ -165,13 +166,11 @@ public class StarSystemGenerator {
 		// TODO Only supporting single star systems for now
 		starSystem.getStars().add(randomStar.get());
 
-		// TODO support exploding dice
-		int totalPlanets = rollD6() + rollD6();
+		int totalPlanets = Dice.rollExplodingD6() + Dice.rollExplodingD6();
 		int distanceIndex = 0;
 		for(int i=1; i<=totalPlanets; i++) {
 			PlanetaryBody planetaryBody = randomPlanetaryBody(i);
-			// TODO support exploding dice
-			distanceIndex += rollD6();
+			distanceIndex += Dice.rollD6();
 			planetaryBody.setAuDistance(auDistance.apply(distanceIndex));
 		}
 		return starSystem;
@@ -181,8 +180,7 @@ public class StarSystemGenerator {
 		if (systemPosition < 1) {
 			throw new IllegalArgumentException("systemPosition must be positive value");
 		}
-		// TODO support exploding dice
-		int roll = rollD6() + systemPosition;
+		int roll = Dice.rollExplodingD6() + systemPosition;
 		PlanetaryBody planetaryBody;
 		switch (roll) {
 			case 1:
@@ -217,7 +215,7 @@ public class StarSystemGenerator {
 
 	RockyPlanet randomRockyPlanet() {
 		RockyPlanet planet = new RockyPlanet();
-		int roll = rollD6() +rollD6();
+		int roll = Dice.rollD6() + Dice.rollD6();
 		switch(roll) {
 			case 2:
 				planet.setPlanetaryType(PlanetaryType.R);
@@ -248,14 +246,5 @@ public class StarSystemGenerator {
 		}
 		return planet;
 	}
-
-	int rollD6() {
-		return ThreadLocalRandom.current().nextInt(1, 7);
-	}
-
-	int rollD66() {
-		return rollD6() * 10 + rollD6();
-	}
-
 
 }
