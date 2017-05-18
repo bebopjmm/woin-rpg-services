@@ -1,7 +1,10 @@
 package com.rpgcampaigner.woin.core.universe;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author jmccormick
@@ -10,8 +13,7 @@ import java.util.Set;
 public class StarSystem {
 	private Set<Star> stars = new HashSet<>();
 
-	// TODO make this a set sorted by auDistance
-	private Set<PlanetaryBody> planetaryBodies = new HashSet<>();
+	private Set<PlanetaryBody> planetaryBodies = new TreeSet<>();
 
 	public Set<Star> getStars() {
 		return stars;

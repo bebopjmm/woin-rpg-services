@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.rpgcampaigner.woin.core.Dice;
+import com.rpgcampaigner.woin.core.universe.AtmosphereDensity;
 import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
 import com.rpgcampaigner.woin.core.universe.PlanetarySize;
 import com.rpgcampaigner.woin.core.universe.PlanetaryType;
@@ -36,6 +37,16 @@ public class StarSystemGenerator {
 			return config.getAuDistanceMap().get(maxIndex) + delta * config.getAuDistanceIncrement();
 		}
 		return config.getAuDistanceMap().get(i);
+	};
+
+	Function<Integer, AtmosphereDensity> atmosphereDensityFunction = i -> {
+		if (i < config.minAtmosphereDensityIndex()) {
+			i = config.minAtmosphereDensityIndex();
+		}
+		if (i > config.maxAtmosphereDensityIndex()) {
+			i = config.maxAtmosphereDensityIndex();
+		}
+		return AtmosphereDensity.valueOf(config.getAtmosphereDensity().get(i));
 	};
 
 	public Supplier<Star> randomStar = () -> {
@@ -228,6 +239,7 @@ public class StarSystemGenerator {
 				planetaryBody = new PlanetaryBody();
 				planetaryBody.setType(PlanetaryType.G);
 				generateSizeBasedAttributes(planetaryBody, PlanetarySize.g);
+				generateAtmosphereAttributes(planetaryBody);
 				break;
 			case 12:
 			case 13:
@@ -236,6 +248,7 @@ public class StarSystemGenerator {
 				planetaryBody = new PlanetaryBody();
 				planetaryBody.setType(PlanetaryType.I);
 				generateSizeBasedAttributes(planetaryBody, PlanetarySize.g);
+				generateAtmosphereAttributes(planetaryBody);
 				break;
 		}
 		return planetaryBody;
@@ -245,10 +258,11 @@ public class StarSystemGenerator {
 		RockyPlanet planet = new RockyPlanet();
 		planet.setType(PlanetaryType.valueOf(config.getRockyPlanetType().get(Dice.rollD6() + Dice.rollD6())));
 		generateSizeBasedAttributes(planet, PlanetarySize.valueOf(config.getRockyPlanetSize().get(Dice.rollD6())));
+		generateAtmosphereAttributes(planet);
 		return planet;
 	}
 
-	PlanetaryBody generateSizeBasedAttributes(PlanetaryBody planetaryBody, PlanetarySize size) {
+	private void generateSizeBasedAttributes(PlanetaryBody planetaryBody, PlanetarySize size) {
 		Objects.requireNonNull(planetaryBody);
 		Objects.requireNonNull(size);
 		planetaryBody.setSize(Optional.of(size));
@@ -256,7 +270,17 @@ public class StarSystemGenerator {
 		planetaryBody.setGravity(size.generateGravity());
 		planetaryBody.setRotationHrs(size.generateRotationHrs());
 		planetaryBody.setHasRings(size.generateHasRings());
-		return planetaryBody;
+	}
+
+	private void generateAtmosphereAttributes(PlanetaryBody planetaryBody) {
+		int gravityMod = 0;
+		if (planetaryBody.getGravity() >= 1.6)
+			gravityMod += 2;
+		if (planetaryBody.getGravity() <= 0.6) {
+			gravityMod -= 2;
+		}
+		planetaryBody.setAtmosphereDensity(atmosphereDensityFunction
+				.apply(planetaryBody.getType().generateAtmosphereDensityValue() + gravityMod));
 	}
 
 }

@@ -7,7 +7,7 @@ import java.util.Set;
  * @author jmccormick
  * @since 5/16/17
  */
-public class PlanetaryBody {
+public class PlanetaryBody implements Comparable<PlanetaryBody>{
 	private float auDistance;
 	private String stellarCode;
 	private PlanetaryType type;
@@ -15,6 +15,8 @@ public class PlanetaryBody {
 	private float gravity;
 	private int rotationHrs;
 	private boolean hasRings;
+	private int habitabilityRating = 10;
+	private AtmosphereDensity atmosphereDensity = AtmosphereDensity.NONE;
 	private Optional<PlanetarySize> size = Optional.empty();
 	private Optional<String> name = Optional.empty();
 	private Set<PlanetaryBody> moons;
@@ -85,5 +87,26 @@ public class PlanetaryBody {
 
 	public void setSize(Optional<PlanetarySize> size) {
 		this.size = size;
+	}
+
+	public int getHabitabilityRating() {
+		return habitabilityRating;
+	}
+
+	public void setHabitabilityRating(int habitabilityRating) {
+		this.habitabilityRating = habitabilityRating;
+	}
+
+	public AtmosphereDensity getAtmosphereDensity() {
+		return atmosphereDensity;
+	}
+
+	public void setAtmosphereDensity(AtmosphereDensity atmosphereDensity) {
+		this.atmosphereDensity = atmosphereDensity;
+	}
+
+	@Override
+	public int compareTo(PlanetaryBody o) {
+		return (int)(this.auDistance - o.auDistance);
 	}
 }

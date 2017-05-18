@@ -26,6 +26,8 @@ public class StarSystemGeneratorConfig {
 
 	private Map<Integer, String> rockyPlanetSize = new HashMap<>();
 
+	private Map<Integer, String> atmosphereDensity = new HashMap<>();
+
 
 	public Map<Integer, Float> getAuDistanceMap() {
 		return auDistanceMap;
@@ -93,5 +95,21 @@ public class StarSystemGeneratorConfig {
 
 	public void setRockyPlanetSize(Map<Integer, String> rockyPlanetSize) {
 		this.rockyPlanetSize = rockyPlanetSize;
+	}
+
+	public Map<Integer, String> getAtmosphereDensity() {
+		return atmosphereDensity;
+	}
+
+	public void setAtmosphereDensity(Map<Integer, String> atmosphereDensity) {
+		this.atmosphereDensity = atmosphereDensity;
+	}
+
+	public int minAtmosphereDensityIndex() {
+		return Collections.min(atmosphereDensity.keySet());
+	}
+
+	public int maxAtmosphereDensityIndex() {
+		return Collections.max(atmosphereDensity.keySet());
 	}
 }

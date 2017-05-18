@@ -222,3 +222,18 @@ rockyPlanetSize:
   4:  m
   5:  l
   6:  g
+
+atmosphereDensity:
+  4:  NONE
+  5:  THIN
+  6:  THIN
+  7:  THIN
+  8:  EARTH_LIKE
+  9:  EARTH_LIKE
+  10: EARTH_LIKE
+  11: EARTH_LIKE
+  12: THICK
+  13: THICK
+  14: THICK
+  15: THICK
+  16: CRUSHING
