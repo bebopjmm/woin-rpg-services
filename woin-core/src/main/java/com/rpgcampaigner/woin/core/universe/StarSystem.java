@@ -10,7 +10,14 @@ import java.util.Set;
 public class StarSystem {
 	private Set<Star> stars = new HashSet<>();
 
+	// TODO make this a set sorted by auDistance
+	private Set<PlanetaryBody> planetaryBodies = new HashSet<>();
+
 	public Set<Star> getStars() {
 		return stars;
+	}
+
+	public Set<PlanetaryBody> getPlanetaryBodies() {
+		return planetaryBodies;
 	}
 }

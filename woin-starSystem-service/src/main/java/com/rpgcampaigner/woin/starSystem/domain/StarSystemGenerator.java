@@ -1,6 +1,5 @@
 package com.rpgcampaigner.woin.starSystem.domain;
 
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -25,7 +24,7 @@ public class StarSystemGenerator {
 	}
 
 	Function<Integer, Float> auDistance = i -> {
-		if (i<1) {
+		if (i < 1) {
 			throw new IllegalArgumentException("auDistance input value must be a positive integer");
 		}
 		int maxIndex = config.maxAuDistanceIndex();
@@ -42,13 +41,16 @@ public class StarSystemGenerator {
 		StringBuilder nameBuilder = new StringBuilder();
 		nameBuilder.append(config.getStarNamesPt1().get(Dice.rollD66()) + " ");
 		switch (Dice.rollD6()) {
-			case 1:case 2:
+			case 1:
+			case 2:
 				nameBuilder.append(config.getStarNamesPt2a().get(Dice.rollD66()));
 				break;
-			case 3:case 4:
+			case 3:
+			case 4:
 				nameBuilder.append(config.getStarNamesPt2b().get(Dice.rollD66()));
 				break;
-			case 5:case 6:
+			case 5:
+			case 6:
 				nameBuilder.append(config.getStarNamesPt2c().get(Dice.rollD66()));
 		}
 
@@ -179,14 +181,19 @@ public class StarSystemGenerator {
 	public Supplier<StarSystem> randomStarSystem = () -> {
 		StarSystem starSystem = new StarSystem();
 		// TODO Only supporting single star systems for now
-		starSystem.getStars().add(randomStar.get());
+		Star star = randomStar.get();
+		String stellarCode = star.getSpectralType().name();
+		starSystem.getStars().add(star);
 
 		int totalPlanets = Dice.rollExplodingD6() + Dice.rollExplodingD6();
 		int distanceIndex = 0;
-		for(int i=1; i<=totalPlanets; i++) {
+		for (int i = 1; i <= totalPlanets; i++) {
 			PlanetaryBody planetaryBody = randomPlanetaryBody(i);
+			planetaryBody.setStellarCode(stellarCode + i);
 			distanceIndex += Dice.rollD6();
 			planetaryBody.setAuDistance(auDistance.apply(distanceIndex));
+
+			starSystem.getPlanetaryBodies().add(planetaryBody);
 		}
 		return starSystem;
 	};
@@ -206,7 +213,9 @@ public class StarSystemGenerator {
 			case 6:
 				planetaryBody = randomRockyPlanet();
 				break;
-			case 7:case 11:default:
+			case 7:
+			case 11:
+			default:
 				planetaryBody = new PlanetaryBody();
 				planetaryBody.setPlanetaryType(PlanetaryType.A);
 				break;
@@ -231,20 +240,22 @@ public class StarSystemGenerator {
 	RockyPlanet randomRockyPlanet() {
 		RockyPlanet planet = new RockyPlanet();
 		int roll = Dice.rollD6() + Dice.rollD6();
-		switch(roll) {
+		switch (roll) {
 			case 2:
 				planet.setPlanetaryType(PlanetaryType.R);
 				break;
 			case 3:
 				planet.setPlanetaryType(PlanetaryType.W);
 				break;
-			case 4:case 5:
+			case 4:
+			case 5:
 				planet.setPlanetaryType(PlanetaryType.I);
 				break;
 			case 6:
 				planet.setPlanetaryType(PlanetaryType.D);
 				break;
-			case 7:case 8:
+			case 7:
+			case 8:
 				planet.setPlanetaryType(PlanetaryType.B);
 				break;
 			case 9:
