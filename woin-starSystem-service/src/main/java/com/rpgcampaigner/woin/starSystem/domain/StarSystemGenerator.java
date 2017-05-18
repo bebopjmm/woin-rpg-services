@@ -1,10 +1,13 @@
 package com.rpgcampaigner.woin.starSystem.domain;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.rpgcampaigner.woin.core.Dice;
 import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
+import com.rpgcampaigner.woin.core.universe.PlanetarySize;
 import com.rpgcampaigner.woin.core.universe.PlanetaryType;
 import com.rpgcampaigner.woin.core.universe.RockyPlanet;
 import com.rpgcampaigner.woin.core.universe.SpectralType;
@@ -217,60 +220,43 @@ public class StarSystemGenerator {
 			case 11:
 			default:
 				planetaryBody = new PlanetaryBody();
-				planetaryBody.setPlanetaryType(PlanetaryType.A);
+				planetaryBody.setType(PlanetaryType.A);
 				break;
 			case 8:
 			case 9:
 			case 10:
 				planetaryBody = new PlanetaryBody();
-				planetaryBody.setPlanetaryType(PlanetaryType.G);
+				planetaryBody.setType(PlanetaryType.G);
+				generateSizeBasedAttributes(planetaryBody, PlanetarySize.g);
 				break;
 			case 12:
 			case 13:
 			case 14:
 			case 15:
 				planetaryBody = new PlanetaryBody();
-				planetaryBody.setPlanetaryType(PlanetaryType.I);
+				planetaryBody.setType(PlanetaryType.I);
+				generateSizeBasedAttributes(planetaryBody, PlanetarySize.g);
 				break;
 		}
-
 		return planetaryBody;
 	}
 
 	RockyPlanet randomRockyPlanet() {
 		RockyPlanet planet = new RockyPlanet();
-		int roll = Dice.rollD6() + Dice.rollD6();
-		switch (roll) {
-			case 2:
-				planet.setPlanetaryType(PlanetaryType.R);
-				break;
-			case 3:
-				planet.setPlanetaryType(PlanetaryType.W);
-				break;
-			case 4:
-			case 5:
-				planet.setPlanetaryType(PlanetaryType.I);
-				break;
-			case 6:
-				planet.setPlanetaryType(PlanetaryType.D);
-				break;
-			case 7:
-			case 8:
-				planet.setPlanetaryType(PlanetaryType.B);
-				break;
-			case 9:
-				planet.setPlanetaryType(PlanetaryType.V);
-				break;
-			case 10:
-				planet.setPlanetaryType(PlanetaryType.S);
-				break;
-			case 11:
-				planet.setPlanetaryType(PlanetaryType.J);
-				break;
-			case 12:
-				planet.setPlanetaryType(PlanetaryType.M);
-		}
+		planet.setType(PlanetaryType.valueOf(config.getRockyPlanetType().get(Dice.rollD6() + Dice.rollD6())));
+		generateSizeBasedAttributes(planet, PlanetarySize.valueOf(config.getRockyPlanetSize().get(Dice.rollD6())));
 		return planet;
+	}
+
+	PlanetaryBody generateSizeBasedAttributes(PlanetaryBody planetaryBody, PlanetarySize size) {
+		Objects.requireNonNull(planetaryBody);
+		Objects.requireNonNull(size);
+		planetaryBody.setSize(Optional.of(size));
+		planetaryBody.setRadiusKm(size.generateRadius());
+		planetaryBody.setGravity(size.generateGravity());
+		planetaryBody.setRotationHrs(size.generateRotationHrs());
+		planetaryBody.setHasRings(size.generateHasRings());
+		return planetaryBody;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.rpgcampaigner.woin.core.universe;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author jmccormick
@@ -9,9 +10,14 @@ import java.util.Optional;
 public class PlanetaryBody {
 	private float auDistance;
 	private String stellarCode;
-	private PlanetaryType planetaryType;
+	private PlanetaryType type;
+	private int radiusKm;
+	private float gravity;
+	private int rotationHrs;
+	private boolean hasRings;
+	private Optional<PlanetarySize> size = Optional.empty();
 	private Optional<String> name = Optional.empty();
-
+	private Set<PlanetaryBody> moons;
 
 	public String getStellarCode() {
 		return stellarCode;
@@ -21,12 +27,12 @@ public class PlanetaryBody {
 		this.stellarCode = stellarCode;
 	}
 
-	public PlanetaryType getPlanetaryType() {
-		return planetaryType;
+	public PlanetaryType getType() {
+		return type;
 	}
 
-	public void setPlanetaryType(PlanetaryType planetaryType) {
-		this.planetaryType = planetaryType;
+	public void setType(PlanetaryType type) {
+		this.type = type;
 	}
 
 	public float getAuDistance() {
@@ -35,5 +41,49 @@ public class PlanetaryBody {
 
 	public void setAuDistance(float auDistance) {
 		this.auDistance = auDistance;
+	}
+
+	public int getRadiusKm() {
+		return radiusKm;
+	}
+
+	public void setRadiusKm(int radiusKm) {
+		this.radiusKm = radiusKm;
+	}
+
+	public float getGravity() {
+		return gravity;
+	}
+
+	public void setGravity(float gravity) {
+		this.gravity = gravity;
+	}
+
+	public int getRotationHrs() {
+		return rotationHrs;
+	}
+
+	public void setRotationHrs(int rotationHrs) {
+		this.rotationHrs = rotationHrs;
+	}
+
+	public boolean hasRings() {
+		return hasRings;
+	}
+
+	public void setHasRings(boolean hasRings) {
+		this.hasRings = hasRings;
+	}
+
+	public Set<PlanetaryBody> getMoons() {
+		return moons;
+	}
+
+	public Optional<PlanetarySize> getSize() {
+		return size;
+	}
+
+	public void setSize(Optional<PlanetarySize> size) {
+		this.size = size;
 	}
 }

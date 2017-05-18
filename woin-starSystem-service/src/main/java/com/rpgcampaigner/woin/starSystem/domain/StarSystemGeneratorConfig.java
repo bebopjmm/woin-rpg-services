@@ -18,9 +18,13 @@ public class StarSystemGeneratorConfig {
 
 	private Map<Integer, String> starNamesPt2a = new HashMap<>();
 
-	private Map<Integer, String> starNamesPt2b= new HashMap<>();
+	private Map<Integer, String> starNamesPt2b = new HashMap<>();
 
 	private Map<Integer, String> starNamesPt2c = new HashMap<>();
+
+	private Map<Integer, String> rockyPlanetType = new HashMap<>();
+
+	private Map<Integer, String> rockyPlanetSize = new HashMap<>();
 
 
 	public Map<Integer, Float> getAuDistanceMap() {
@@ -73,5 +77,21 @@ public class StarSystemGeneratorConfig {
 
 	public void setStarNamesPt2c(Map<Integer, String> starNamesPt2c) {
 		this.starNamesPt2c = starNamesPt2c;
+	}
+
+	public Map<Integer, String> getRockyPlanetType() {
+		return rockyPlanetType;
+	}
+
+	public void setRockyPlanetType(Map<Integer, String> rockyPlanetType) {
+		this.rockyPlanetType = rockyPlanetType;
+	}
+
+	public Map<Integer, String> getRockyPlanetSize() {
+		return rockyPlanetSize;
+	}
+
+	public void setRockyPlanetSize(Map<Integer, String> rockyPlanetSize) {
+		this.rockyPlanetSize = rockyPlanetSize;
 	}
 }

@@ -201,3 +201,24 @@ starNamesPt2c:
   64: Vampri
   65: Bondi
   66: Solaris
+
+rockyPlanetType:
+  2:  R
+  3:  W
+  4:  I
+  5:  I
+  6:  D
+  7:  B
+  8:  B
+  9:  V
+  10: S
+  11: J
+  12: M
+
+rockyPlanetSize:
+  1:  d
+  2:  s
+  3:  m
+  4:  m
+  5:  l
+  6:  g
