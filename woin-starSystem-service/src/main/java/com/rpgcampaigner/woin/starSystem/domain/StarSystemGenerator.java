@@ -213,10 +213,6 @@ public class StarSystemGenerator {
 			if (!added) {
 				System.err.println("new planetary body NOT added");
 			}
-			if (starSystem.getPlanetaryBodies().size() != i) {
-				System.err.println("!!!! new planetary body not added, i : size = " + i + " : " + starSystem
-						.getPlanetaryBodies().size());
-			}
 		}
 		System.out.println("-- total planets in system = " + starSystem.getPlanetaryBodies().size());
 		return starSystem;
@@ -274,7 +270,10 @@ public class StarSystemGenerator {
 				moon.setSize(Optional.of(PlanetarySize.o));
 				moon.setPosition(planetaryBody.getPosition());
 				moon.setOrbitalIndex(Optional.of(i));
-				planetaryBody.getMoons().add(moon);
+				boolean added = planetaryBody.getMoons().add(moon);
+				if (!added) {
+					System.err.println("new moon NOT added");
+				}
 			}
 		});
 		return planetaryBody;

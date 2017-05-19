@@ -1,8 +1,10 @@
 package com.rpgcampaigner.woin.starSystem.model;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
 
@@ -13,6 +15,7 @@ import io.advantageous.qbit.annotation.JsonIgnore;
  * @since 5/18/17
  */
 public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefinition> {
+	private UUID uuid;
 	private float auDistance;
 	@JsonIgnore
 	private Optional<Integer> orbitalIndex = Optional.empty();
@@ -29,6 +32,7 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 	private Set<PlanetaryBodyDefinition> satellites = new TreeSet<>();
 
 	public PlanetaryBodyDefinition(PlanetaryBody planetaryBody) {
+		this.uuid = planetaryBody.getUuid();
 		this.categoryCode = planetaryBody.getCategoryCode();
 		this.auDistance = planetaryBody.getAuDistance();
 		this.orbitalIndex = planetaryBody.getOrbitalIndex();
@@ -44,8 +48,12 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 			this.composition = atmosphere.getPrimaryComposition().name() + "(" +
 					atmosphere.getTraceComposition().name() + ")";
 		});
-		planetaryBody.getMoons().stream().forEach(moon ->
-				this.satellites.add(new PlanetaryBodyDefinition(moon)));
+		planetaryBody.getMoons().stream().forEach(moon -> {
+			boolean added = this.satellites.add(new PlanetaryBodyDefinition(moon));
+			if (!added) {
+				System.err.println("!!! Failed to convert moon to definition, " + moon.getCategoryCode());
+			}
+		});
 	}
 
 	public float getAuDistance() {
@@ -138,11 +146,30 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 
 	@Override
 	public int compareTo(PlanetaryBodyDefinition o) {
-		int auComparison = (int) (this.auDistance = o.auDistance);
-		if ((auComparison == 0) && this.orbitalIndex.isPresent() && o.orbitalIndex.isPresent()) {
+		float auComparison = this.auDistance - o.auDistance;
+		if ((auComparison == 0.0f) && this.orbitalIndex.isPresent() && o.orbitalIndex.isPresent()) {
 			return this.orbitalIndex.get() - o.orbitalIndex.get();
-		} else {
-			return auComparison;
 		}
+		if (auComparison < 0.0f) {
+			return -1;
+		} else if (auComparison > 0.0f) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof PlanetaryBodyDefinition)) {
+			return false;
+		}
+		PlanetaryBodyDefinition other = (PlanetaryBodyDefinition) obj;
+		return this.uuid == other.uuid;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(uuid);
 	}
 }

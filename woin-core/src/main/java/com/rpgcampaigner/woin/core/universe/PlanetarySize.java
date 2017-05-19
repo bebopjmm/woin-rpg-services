@@ -24,7 +24,7 @@ public enum PlanetarySize {
 				}
 				return sum * 10;
 			},
-			() -> Dice.rollD6() - 4),
+			() -> Math.max(0, Dice.rollD6() - 4)),
 	s("small", 0,
 			() -> Dice.rollD6() * 1000,
 			() -> (Dice.rollD6() + Dice.rollD6()) * 0.1f,
@@ -35,7 +35,7 @@ public enum PlanetarySize {
 				}
 				return sum * 2;
 			},
-			() -> Dice.rollD6() - 4),
+			() -> Math.max(0, Dice.rollD6() - 4)),
 	m("medium", 1,
 			() -> (Dice.rollD6()+4) * 1000,
 			() -> (Dice.rollD6() + Dice.rollD6() + Dice.rollD6()) * 0.1f,
@@ -46,7 +46,7 @@ public enum PlanetarySize {
 				}
 				return sum;
 			},
-			() -> Dice.rollD6() - 3),
+			() -> Math.max(0, Dice.rollD6() - 3)),
 	l("large", 3,
 			() -> Dice.rollD6() * 10000,
 			() -> {

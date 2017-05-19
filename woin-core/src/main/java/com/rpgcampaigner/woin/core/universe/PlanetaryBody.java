@@ -27,6 +27,14 @@ public class PlanetaryBody implements Comparable<PlanetaryBody> {
 	private Optional<String> name = Optional.empty();
 	private Set<PlanetaryBody> moons = new HashSet<>();
 
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
 	public String getCategoryCode() {
 		StringBuilder code = new StringBuilder();
 		code.append(stellarCode + "-");
@@ -138,11 +146,16 @@ public class PlanetaryBody implements Comparable<PlanetaryBody> {
 
 	@Override
 	public int compareTo(PlanetaryBody o) {
-		int auComparison = (int) (this.auDistance = o.auDistance);
-		if ((auComparison == 0) && this.orbitalIndex.isPresent() && o.orbitalIndex.isPresent()) {
+		float auComparison = this.auDistance - o.auDistance;
+		if ((auComparison == 0.0f) && this.orbitalIndex.isPresent() && o.orbitalIndex.isPresent()) {
 			return this.orbitalIndex.get() - o.orbitalIndex.get();
+		}
+		if (auComparison < 0.0f) {
+			return -1;
+		} else if (auComparison > 0.0f) {
+			return 1;
 		} else {
-			return auComparison;
+			return 0;
 		}
 	}
 
