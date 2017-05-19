@@ -11,7 +11,7 @@ import java.util.TreeSet;
 public class StarSystem {
 	private Set<Star> stars = new HashSet<>();
 
-	private Set<PlanetaryBody> planetaryBodies = new TreeSet<>();
+	private Set<PlanetaryBody> planetaryBodies = new HashSet<>();
 
 	public Set<Star> getStars() {
 		return stars;

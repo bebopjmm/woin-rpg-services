@@ -14,6 +14,8 @@ public class StarSystemGeneratorConfig {
 
 	private float auDistanceIncrement;
 
+	private int maxMoons;
+
 	private Map<Integer, String> starNamesPt1 = new HashMap<>();
 
 	private Map<Integer, String> starNamesPt2a = new HashMap<>();
@@ -49,6 +51,14 @@ public class StarSystemGeneratorConfig {
 
 	public void setAuDistanceIncrement(float auDistanceIncrement) {
 		this.auDistanceIncrement = auDistanceIncrement;
+	}
+
+	public int getMaxMoons() {
+		return maxMoons;
+	}
+
+	public void setMaxMoons(int maxMoons) {
+		this.maxMoons = maxMoons;
 	}
 
 	public Map<Integer, String> getStarNamesPt1() {

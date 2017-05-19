@@ -41,6 +41,9 @@ public class StarSystemService {
 	@RequestMapping(value = "/generate", method = RequestMethod.GET)
 	public StarSystemDefinition generate() {
 		System.out.println("Generating a star system");
-		return new StarSystemDefinition(starSystemGenerator.randomStarSystem.get());
+		StarSystem system = starSystemGenerator.randomStarSystem.get();
+		StarSystemDefinition definition = new StarSystemDefinition(system);
+		System.out.println("++ definition total planets = " + definition.getPlanetaryBodies().size());
+		return definition;
 	}
 }

@@ -250,3 +250,5 @@ atmosphereComposition:
   10: HCN
   11: SO2
   12: NH3
+
+maxMoons: 32

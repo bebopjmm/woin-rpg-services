@@ -202,19 +202,27 @@ public class StarSystemGenerator {
 		starSystem.getStars().add(star);
 
 		int totalPlanets = Dice.rollExplodingD6() + Dice.rollExplodingD6();
+		System.out.println("-- total planets to generate = " + totalPlanets);
 		int distanceIndex = 0;
 		for (int i = 1; i <= totalPlanets; i++) {
-			PlanetaryBody planetaryBody = randomPlanetaryBody(i);
-			planetaryBody.setStellarCode(stellarCode + totalPlanets);
+			PlanetaryBody planetaryBody = randomPlanetaryBody(stellarCode + totalPlanets, i);
 			distanceIndex += Dice.rollD6();
 			planetaryBody.setAuDistance(auDistance.apply(distanceIndex));
-
-			starSystem.getPlanetaryBodies().add(planetaryBody);
+			System.out.println("---- type:distance = " + planetaryBody.getType() + ":" + planetaryBody.getAuDistance());
+			boolean added = starSystem.getPlanetaryBodies().add(planetaryBody);
+			if (!added) {
+				System.err.println("new planetary body NOT added");
+			}
+			if (starSystem.getPlanetaryBodies().size() != i) {
+				System.err.println("!!!! new planetary body not added, i : size = " + i + " : " + starSystem
+						.getPlanetaryBodies().size());
+			}
 		}
+		System.out.println("-- total planets in system = " + starSystem.getPlanetaryBodies().size());
 		return starSystem;
 	};
 
-	PlanetaryBody randomPlanetaryBody(int systemPosition) {
+	PlanetaryBody randomPlanetaryBody(String stellarCode, int systemPosition) {
 		if (systemPosition < 1) {
 			throw new IllegalArgumentException("systemPosition must be positive value");
 		}
@@ -227,7 +235,7 @@ public class StarSystemGenerator {
 			case 4:
 			case 5:
 			case 6:
-				planetaryBody = randomRockyPlanet();
+				planetaryBody = randomRockyPlanet(Optional.empty());
 				break;
 			case 7:
 			case 11:
@@ -253,14 +261,37 @@ public class StarSystemGenerator {
 				generateAtmosphereAttributes(planetaryBody);
 				break;
 		}
+		planetaryBody.setStellarCode(stellarCode);
 		planetaryBody.setPosition(systemPosition);
+		planetaryBody.getSize().ifPresent(size -> {
+			int nMoons = Math.min(size.generateNumberOfMoons(), config.getMaxMoons());
+			System.out.println("Generate " + nMoons + " moons");
+			RockyPlanet moon;
+			for (int i=0; i<nMoons; i++) {
+				moon = randomRockyPlanet(planetaryBody.getSize());
+				moon.setStellarCode(planetaryBody.getStellarCode());
+				// Once generated, moons have size value of 'o' for orbital
+				moon.setSize(Optional.of(PlanetarySize.o));
+				moon.setPosition(planetaryBody.getPosition());
+				moon.setOrbitalIndex(Optional.of(i));
+				planetaryBody.getMoons().add(moon);
+			}
+		});
 		return planetaryBody;
 	}
 
-	RockyPlanet randomRockyPlanet() {
+	RockyPlanet randomRockyPlanet(Optional<PlanetarySize> maxSize) {
+		Objects.requireNonNull(maxSize);
+
 		RockyPlanet planet = new RockyPlanet();
 		planet.setType(PlanetaryType.valueOf(config.getRockyPlanetType().get(Dice.rollD6() + Dice.rollD6())));
-		generateSizeBasedAttributes(planet, PlanetarySize.valueOf(config.getRockyPlanetSize().get(Dice.rollD6())));
+		PlanetarySize size = PlanetarySize.valueOf(config.getRockyPlanetSize().get(Dice.rollD6()));
+		if (maxSize.isPresent())  {
+			while (size.compareTo(maxSize.get()) > 0) {
+				size = PlanetarySize.valueOf(config.getRockyPlanetSize().get(Dice.rollD6()));
+			}
+		}
+		generateSizeBasedAttributes(planet, size);
 		generateAtmosphereAttributes(planet);
 		return planet;
 	}

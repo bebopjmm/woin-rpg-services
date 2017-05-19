@@ -1,6 +1,12 @@
 package com.rpgcampaigner.woin.starSystem.model;
 
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+
 import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
+
+import io.advantageous.qbit.annotation.JsonIgnore;
 
 /**
  * @author jmccormick
@@ -8,6 +14,8 @@ import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
  */
 public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefinition> {
 	private float auDistance;
+	@JsonIgnore
+	private Optional<Integer> orbitalIndex = Optional.empty();
 	private String categoryCode;
 	private String type;
 	private String size = "N/A";
@@ -18,10 +26,12 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 	private String atmosphere = "None";
 	private String composition = "--";
 	private int habitabilityRating = 10;
+	private Set<PlanetaryBodyDefinition> satellites = new TreeSet<>();
 
 	public PlanetaryBodyDefinition(PlanetaryBody planetaryBody) {
 		this.categoryCode = planetaryBody.getCategoryCode();
 		this.auDistance = planetaryBody.getAuDistance();
+		this.orbitalIndex = planetaryBody.getOrbitalIndex();
 		this.type = planetaryBody.getType().getDescription();
 		this.radiusKm = planetaryBody.getRadiusKm();
 		this.gravity = planetaryBody.getGravity();
@@ -34,6 +44,8 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 			this.composition = atmosphere.getPrimaryComposition().name() + "(" +
 					atmosphere.getTraceComposition().name() + ")";
 		});
+		planetaryBody.getMoons().stream().forEach(moon ->
+				this.satellites.add(new PlanetaryBodyDefinition(moon)));
 	}
 
 	public float getAuDistance() {
@@ -126,6 +138,11 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 
 	@Override
 	public int compareTo(PlanetaryBodyDefinition o) {
-		return (int) (this.auDistance - o.auDistance);
+		int auComparison = (int) (this.auDistance = o.auDistance);
+		if ((auComparison == 0) && this.orbitalIndex.isPresent() && o.orbitalIndex.isPresent()) {
+			return this.orbitalIndex.get() - o.orbitalIndex.get();
+		} else {
+			return auComparison;
+		}
 	}
 }

@@ -17,6 +17,7 @@ public class StarSystemDefinition {
 
 	public StarSystemDefinition(StarSystem starSystem) {
 		this.stars = starSystem.getStars();
+		System.out.println("-- total planets for definiton = " + starSystem.getPlanetaryBodies().size());
 		starSystem.getPlanetaryBodies().stream()
 				.forEach(planet -> this.planetaryBodies.add(new PlanetaryBodyDefinition(planet)));
 	}
