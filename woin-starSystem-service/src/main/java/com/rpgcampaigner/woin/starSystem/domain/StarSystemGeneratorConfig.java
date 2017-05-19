@@ -28,6 +28,8 @@ public class StarSystemGeneratorConfig {
 
 	private Map<Integer, String> atmosphereDensity = new HashMap<>();
 
+	private Map<Integer, String> atmosphereComposition = new HashMap<>();
+
 
 	public Map<Integer, Float> getAuDistanceMap() {
 		return auDistanceMap;
@@ -111,5 +113,13 @@ public class StarSystemGeneratorConfig {
 
 	public int maxAtmosphereDensityIndex() {
 		return Collections.max(atmosphereDensity.keySet());
+	}
+
+	public Map<Integer, String> getAtmosphereComposition() {
+		return atmosphereComposition;
+	}
+
+	public void setAtmosphereComposition(Map<Integer, String> atmosphereComposition) {
+		this.atmosphereComposition = atmosphereComposition;
 	}
 }

@@ -111,6 +111,10 @@ public enum PlanetarySize {
 		this.numberMoonsSupplier = numberMoonsSupplier;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
 	public int generateRadius() {
 		return radiusSupplier.get();
 	}

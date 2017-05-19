@@ -11,15 +11,32 @@ public class PlanetaryBody implements Comparable<PlanetaryBody>{
 	private float auDistance;
 	private String stellarCode;
 	private PlanetaryType type;
+	private int position;
 	private int radiusKm;
 	private float gravity;
 	private int rotationHrs;
 	private boolean hasRings;
 	private int habitabilityRating = 10;
-	private AtmosphereDensity atmosphereDensity = AtmosphereDensity.NONE;
+	private Optional<Atmosphere> atmosphere = Optional.empty();
 	private Optional<PlanetarySize> size = Optional.empty();
 	private Optional<String> name = Optional.empty();
 	private Set<PlanetaryBody> moons;
+
+	public String getCategoryCode() {
+		StringBuilder code = new StringBuilder();
+		code.append(stellarCode + "-");
+		size.ifPresent(size -> code.append(size.name()));
+		code.append(position + type.name());
+		return code.toString();
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
 
 	public String getStellarCode() {
 		return stellarCode;
@@ -97,12 +114,12 @@ public class PlanetaryBody implements Comparable<PlanetaryBody>{
 		this.habitabilityRating = habitabilityRating;
 	}
 
-	public AtmosphereDensity getAtmosphereDensity() {
-		return atmosphereDensity;
+	public Optional<Atmosphere> getAtmosphere() {
+		return atmosphere;
 	}
 
-	public void setAtmosphereDensity(AtmosphereDensity atmosphereDensity) {
-		this.atmosphereDensity = atmosphereDensity;
+	public void setAtmosphere(Optional<Atmosphere> atmosphere) {
+		this.atmosphere = atmosphere;
 	}
 
 	@Override

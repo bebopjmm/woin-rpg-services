@@ -6,6 +6,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.rpgcampaigner.woin.core.Dice;
+import com.rpgcampaigner.woin.core.universe.Atmosphere;
+import com.rpgcampaigner.woin.core.universe.AtmosphereComposition;
 import com.rpgcampaigner.woin.core.universe.AtmosphereDensity;
 import com.rpgcampaigner.woin.core.universe.PlanetaryBody;
 import com.rpgcampaigner.woin.core.universe.PlanetarySize;
@@ -203,7 +205,7 @@ public class StarSystemGenerator {
 		int distanceIndex = 0;
 		for (int i = 1; i <= totalPlanets; i++) {
 			PlanetaryBody planetaryBody = randomPlanetaryBody(i);
-			planetaryBody.setStellarCode(stellarCode + i);
+			planetaryBody.setStellarCode(stellarCode + totalPlanets);
 			distanceIndex += Dice.rollD6();
 			planetaryBody.setAuDistance(auDistance.apply(distanceIndex));
 
@@ -251,6 +253,7 @@ public class StarSystemGenerator {
 				generateAtmosphereAttributes(planetaryBody);
 				break;
 		}
+		planetaryBody.setPosition(systemPosition);
 		return planetaryBody;
 	}
 
@@ -279,8 +282,21 @@ public class StarSystemGenerator {
 		if (planetaryBody.getGravity() <= 0.6) {
 			gravityMod -= 2;
 		}
-		planetaryBody.setAtmosphereDensity(atmosphereDensityFunction
-				.apply(planetaryBody.getType().generateAtmosphereDensityValue() + gravityMod));
+		AtmosphereDensity density = atmosphereDensityFunction
+				.apply(planetaryBody.getType().generateAtmosphereDensityValue() + gravityMod);
+		if (density != AtmosphereDensity.NONE) {
+			Atmosphere atmosphere = new Atmosphere();
+			atmosphere.setDensity(density);
+			atmosphere.setPrimaryComposition(AtmosphereComposition.valueOf(
+					config.getAtmosphereComposition().get(Dice.rollD6() + Dice.rollD6())));
+			AtmosphereComposition trace = atmosphere.getPrimaryComposition();
+			while (trace == atmosphere.getPrimaryComposition()) {
+				trace = AtmosphereComposition.valueOf(
+						config.getAtmosphereComposition().get(Dice.rollD6() + Dice.rollD6()));
+			}
+			atmosphere.setTraceComposition(trace);
+			planetaryBody.setAtmosphere(Optional.of(atmosphere));
+		}
 	}
 
 }

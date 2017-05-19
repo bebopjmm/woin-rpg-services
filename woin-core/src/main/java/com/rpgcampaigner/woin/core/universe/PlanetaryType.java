@@ -42,6 +42,14 @@ public enum PlanetaryType {
 		this.atmosphereDensitySupplier = atmosphereDensitySupplier;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public boolean isRocky() {
+		return isRocky;
+	}
+
 	public int generateAtmosphereDensityValue() {
 		return atmosphereDensitySupplier.get();
 	}

@@ -237,3 +237,16 @@ atmosphereDensity:
   14: THICK
   15: THICK
   16: CRUSHING
+
+atmosphereComposition:
+  2:  EARTH_LIKE
+  3:  CO2
+  4:  CH4
+  5:  He
+  6:  H
+  7:  N
+  8:  CO
+  9:  Ar
+  10: HCN
+  11: SO2
+  12: NH3

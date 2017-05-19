@@ -8,6 +8,7 @@ import com.rpgcampaigner.woin.core.universe.SpectralType;
 import com.rpgcampaigner.woin.core.universe.StarSystem;
 import com.rpgcampaigner.woin.starSystem.domain.StarSystemGenerator;
 import com.rpgcampaigner.woin.starSystem.model.SpectralTypeDefinition;
+import com.rpgcampaigner.woin.starSystem.model.StarSystemDefinition;
 
 import io.advantageous.qbit.annotation.RequestMapping;
 import io.advantageous.qbit.annotation.RequestMethod;
@@ -38,8 +39,8 @@ public class StarSystemService {
 	}
 
 	@RequestMapping(value = "/generate", method = RequestMethod.GET)
-	public StarSystem generate() {
+	public StarSystemDefinition generate() {
 		System.out.println("Generating a star system");
-		return starSystemGenerator.randomStarSystem.get();
+		return new StarSystemDefinition(starSystemGenerator.randomStarSystem.get());
 	}
 }
