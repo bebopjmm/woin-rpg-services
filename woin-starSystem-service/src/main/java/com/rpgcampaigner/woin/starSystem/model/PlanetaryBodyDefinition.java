@@ -33,7 +33,7 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 
 	public PlanetaryBodyDefinition(PlanetaryBody planetaryBody) {
 		this.uuid = planetaryBody.getUuid();
-		this.categoryCode = planetaryBody.getCategoryCode();
+		this.categoryCode = planetaryBody.buildCategoryCode();
 		this.auDistance = planetaryBody.getAuDistance();
 		this.orbitalIndex = planetaryBody.getOrbitalIndex();
 		this.type = planetaryBody.getType().getDescription();
@@ -51,7 +51,7 @@ public class PlanetaryBodyDefinition implements Comparable<PlanetaryBodyDefiniti
 		planetaryBody.getMoons().stream().forEach(moon -> {
 			boolean added = this.satellites.add(new PlanetaryBodyDefinition(moon));
 			if (!added) {
-				System.err.println("!!! Failed to convert moon to definition, " + moon.getCategoryCode());
+				System.err.println("!!! Failed to convert moon to definition, " + moon.buildCategoryCode());
 			}
 		});
 	}

@@ -21,11 +21,41 @@ public class PlanetaryBody implements Comparable<PlanetaryBody> {
 	private float gravity;
 	private int rotationHrs;
 	private boolean hasRings;
-	private int habitabilityRating = 10;
+	private int habitabilityRating;
 	private Optional<Atmosphere> atmosphere = Optional.empty();
 	private Optional<PlanetarySize> size = Optional.empty();
 	private Optional<String> name = Optional.empty();
 	private Set<PlanetaryBody> moons = new HashSet<>();
+
+
+
+	public String buildCategoryCode() {
+		StringBuilder code = new StringBuilder();
+		code.append(stellarCode + "-");
+		size.ifPresent(size -> code.append(size.name()));
+		code.append(position + type.name());
+		orbitalIndex.ifPresent(i -> code.append(i));
+		return code.toString();
+	}
+
+	public void calculateHabitability() {
+		if (!size.isPresent()) {
+			return;
+		}
+		this.habitabilityRating = 10;
+		this.size.ifPresent(s -> this.habitabilityRating += s.getHabitabilityMod());
+		this.habitabilityRating += type.getHabitabilityMod();
+		if (this.atmosphere.isPresent()) {
+			Atmosphere atmosphere = this.atmosphere.get();
+			this.habitabilityRating += atmosphere.getDensity().getHabitablityMod();
+			this.habitabilityRating += atmosphere.getPrimaryComposition().getHabitablityMod();
+		} else {
+			this.habitabilityRating += AtmosphereDensity.NONE.getHabitablityMod();
+		}
+		// TODO Star modifier
+
+		this.habitabilityRating = Math.max(0, this.habitabilityRating);
+	}
 
 	public UUID getUuid() {
 		return uuid;
@@ -33,15 +63,6 @@ public class PlanetaryBody implements Comparable<PlanetaryBody> {
 
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
-	}
-
-	public String getCategoryCode() {
-		StringBuilder code = new StringBuilder();
-		code.append(stellarCode + "-");
-		size.ifPresent(size -> code.append(size.name()));
-		code.append(position + type.name());
-		orbitalIndex.ifPresent(i -> code.append(i));
-		return code.toString();
 	}
 
 	public int getPosition() {

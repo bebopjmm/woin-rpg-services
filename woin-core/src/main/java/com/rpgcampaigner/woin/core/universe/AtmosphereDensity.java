@@ -5,5 +5,19 @@ package com.rpgcampaigner.woin.core.universe;
  * @since 5/18/17
  */
 public enum AtmosphereDensity {
-	NONE, THIN, EARTH_LIKE, THICK, CRUSHING
+	NONE (-5),
+	THIN (-2),
+	EARTH_LIKE (0),
+	THICK (-2),
+	CRUSHING (-4);
+
+	int habitablityMod;
+
+	AtmosphereDensity(int habitabilityMod) {
+		this.habitablityMod = habitabilityMod;
+	}
+
+	public int getHabitablityMod() {
+		return habitablityMod;
+	}
 }

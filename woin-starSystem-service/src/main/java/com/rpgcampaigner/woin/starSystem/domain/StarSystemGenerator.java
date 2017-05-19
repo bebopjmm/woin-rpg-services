@@ -259,12 +259,14 @@ public class StarSystemGenerator {
 		}
 		planetaryBody.setStellarCode(stellarCode);
 		planetaryBody.setPosition(systemPosition);
+		planetaryBody.calculateHabitability();
 		planetaryBody.getSize().ifPresent(size -> {
 			int nMoons = Math.min(size.generateNumberOfMoons(), config.getMaxMoons());
 			System.out.println("Generate " + nMoons + " moons");
 			RockyPlanet moon;
 			for (int i=0; i<nMoons; i++) {
 				moon = randomRockyPlanet(planetaryBody.getSize());
+				moon.calculateHabitability();
 				moon.setStellarCode(planetaryBody.getStellarCode());
 				// Once generated, moons have size value of 'o' for orbital
 				moon.setSize(Optional.of(PlanetarySize.o));
