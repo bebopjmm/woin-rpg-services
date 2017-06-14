@@ -8,13 +8,13 @@ import com.couchbase.client.java.CouchbaseCluster;
  * @author jmccormick
  * @since 3/17/17
  */
-public class DatabaseConfiguration {
+public class CouchbaseConfiguration {
 
 	private Cluster referenceCluster;
 
 	private Bucket referenceBucket;
 
-	public DatabaseConfiguration(String hostname, String referenceBucketName) {
+	public CouchbaseConfiguration(String hostname, String referenceBucketName) {
 		this.referenceCluster = CouchbaseCluster.create(hostname);
 		this.referenceBucket = this.referenceCluster.openBucket(referenceBucketName);
 	}

@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
+import com.rpgcampaigner.woin.entityReference.dal.ReferenceCouchbaseRepository;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.entityReference.model.NamedDefinition;

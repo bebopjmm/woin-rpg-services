@@ -2,18 +2,17 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 group = "woin-rpg-services"
-version = "1.0-SNAPSHOT"
 
 sourceCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
-subprojects {
+allprojects {
     apply plugin: 'java'
 
     repositories {
-        mavenCentral()
+        jcenter()
     }
+}
+
+subprojects {
+    version = '1.0-SNAPSHOT'
 }
