@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-mainClassName = "com.rpgcampaigner.woin.skills.service.Application"
+mainClassName = "com.rpgcampaigner.woin.entityReference.Application"
 
 dependencies {
     compile project(':woin-core')
