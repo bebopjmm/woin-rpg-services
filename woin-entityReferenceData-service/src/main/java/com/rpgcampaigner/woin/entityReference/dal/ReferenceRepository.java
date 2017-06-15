@@ -15,12 +15,6 @@ public interface ReferenceRepository {
 
 	Optional<SkillGroup> getSkillGroup(String name);
 
-	Set<Skill> getAllSkills();
-
-	Skill getSkill(String skillName);
-
-	void createSkill(Skill skill);
-
 	void createSkillGroup(SkillGroup skillGroup);
 
 	void updateSkillGroup(SkillGroup skillGroup);

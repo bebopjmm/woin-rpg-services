@@ -33,33 +33,33 @@ public class SkillService {
 	 * SKILL SERVICE CALLS
 	 *************************************/
 
-	/**
-	 * @param definition
-	 * @return
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public Skill createSkill(final NamedDefinition definition) {
-		return createSkill.apply(definition.getName());
-	}
-
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public Set<Skill> getAllSkills() {
-		return referenceRepository.getAllSkills();
-	}
-
-	@RequestMapping(value = "/{skillName}", method = RequestMethod.GET)
-	public Skill getSkill(@PathVariable("skillName") String name) {
-		Skill result = Optional.ofNullable(referenceRepository.getSkill(name))
-				.orElseThrow(() -> new IllegalArgumentException("Skill does not exist: " + name));
-		System.out.println("Found skill with name = " + result.getName());
-		return result;
-	}
-
-	final Function<String, Skill> createSkill = name -> {
-		Skill skill = new Skill(name);
-		referenceRepository.createSkill(skill);
-		return skill;
-	};
+//	/**
+//	 * @param definition
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/", method = RequestMethod.POST)
+//	public Skill createSkill(final NamedDefinition definition) {
+//		return createSkill.apply(definition.getName());
+//	}
+//
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public Set<Skill> getAllSkills() {
+//		return referenceRepository.getAllSkills();
+//	}
+//
+//	@RequestMapping(value = "/{skillName}", method = RequestMethod.GET)
+//	public Skill getSkill(@PathVariable("skillName") String name) {
+//		Skill result = Optional.ofNullable(referenceRepository.getSkill(name))
+//				.orElseThrow(() -> new IllegalArgumentException("Skill does not exist: " + name));
+//		System.out.println("Found skill with name = " + result.getName());
+//		return result;
+//	}
+//
+//	final Function<String, Skill> createSkill = name -> {
+//		Skill skill = new Skill(name);
+//		referenceRepository.createSkill(skill);
+//		return skill;
+//	};
 
 	/*************************************
 	 * SKILLGROUP SERVICE CALLS
@@ -72,23 +72,23 @@ public class SkillService {
 	 * @param definition
 	 * @return
 	 */
-	@RequestMapping(value = "/groups/", method = RequestMethod.POST)
+	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public SkillGroup createSkillGroup(final SkillGroupCreateDefinition definition) {
 		SkillGroup skillGroup = new SkillGroup(definition.getName());
-		for (String addSkillName : definition.getSkills()) {
-			skillGroup.getSkillSet().add(Optional.ofNullable(referenceRepository.getSkill(addSkillName))
-					.orElse(createSkill.apply(addSkillName)));
-		}
+//		for (String addSkillName : definition.getSkills()) {
+//			skillGroup.getSkillSet().add(Optional.ofNullable(referenceRepository.getSkill(addSkillName))
+//					.orElse(createSkill.apply(addSkillName)));
+//		}
 		referenceRepository.createSkillGroup(skillGroup);
 		return skillGroup;
 	}
 
-	@RequestMapping(value = "/groups/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public Set<SkillGroup> getAllSkillGroups() {
 		return referenceRepository.getAllSkillGroups();
 	}
 
-	@RequestMapping(value = "/groups/{name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public SkillGroup getSkillGroup(@PathVariable("name") String name) {
 		SkillGroup result = referenceRepository.getSkillGroup(name)
 				.orElseThrow(() -> new IllegalArgumentException("SkillGroup does not exist: " + name));
@@ -96,7 +96,7 @@ public class SkillService {
 		return result;
 	}
 
-	@RequestMapping(value = "/groups/{name}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{name}", method = RequestMethod.PUT)
 	public SkillGroup updateSkillGroup(
 			@PathVariable("name") String name,
 			SkillGroupUpdateDefinition changes) {
@@ -106,14 +106,14 @@ public class SkillService {
 		SkillGroup skillGroup = referenceRepository.getSkillGroup(name)
 				.orElseThrow(() -> new IllegalArgumentException("SkillGroup does not exist: " + name));
 
-		for (String addSkillName : changes.getAddSkills()) {
-			Optional.ofNullable(referenceRepository.getSkill(addSkillName))
-					.ifPresent(skill -> skillGroup.getSkillSet().add(skill));
-		}
-		for (String removeSkillName : changes.getRemoveSkills()) {
-			Optional.ofNullable(referenceRepository.getSkill(removeSkillName))
-					.ifPresent(skill -> skillGroup.getSkillSet().remove(skill));
-		}
+//		for (String addSkillName : changes.getAddSkills()) {
+//			Optional.ofNullable(referenceRepository.getSkill(addSkillName))
+//					.ifPresent(skill -> skillGroup.getSkillSet().add(skill));
+//		}
+//		for (String removeSkillName : changes.getRemoveSkills()) {
+//			Optional.ofNullable(referenceRepository.getSkill(removeSkillName))
+//					.ifPresent(skill -> skillGroup.getSkillSet().remove(skill));
+//		}
 		referenceRepository.updateSkillGroup(skillGroup);
 		return skillGroup;
 	}

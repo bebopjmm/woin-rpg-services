@@ -60,21 +60,6 @@ public class ReferenceDynamoRepository implements ReferenceRepository {
 	}
 
 	@Override
-	public Set<Skill> getAllSkills() {
-		return null;
-	}
-
-	@Override
-	public Skill getSkill(String skillName) {
-		return null;
-	}
-
-	@Override
-	public void createSkill(Skill skill) {
-
-	}
-
-	@Override
 	public void createSkillGroup(SkillGroup skillGroup) {
 
 	}
