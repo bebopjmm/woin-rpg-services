@@ -1,6 +1,5 @@
 package com.rpgcampaigner.woin.entityReference.dal;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,9 +11,10 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Expected;
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
@@ -55,18 +55,20 @@ public class ReferenceDynamoRepository implements ReferenceRepository {
 		Optional<Item> item = Optional.ofNullable(table.getItem("Name", name));
 
 		return item.isPresent() ?
-				Optional.of (convertToSkillGroup.apply(item.get())) :
+				Optional.of(convertToSkillGroup.apply(item.get())) :
 				Optional.empty();
 	}
 
 	@Override
 	public void createSkillGroup(SkillGroup skillGroup) {
-
+		PutItemOutcome outcome = dynamoDB.getTable(configuration.getSkillGroupTableName())
+				.putItem(itemFromSkillGroup.apply(skillGroup), new Expected("Name").notExist());
 	}
 
 	@Override
 	public void updateSkillGroup(SkillGroup skillGroup) {
-
+		PutItemOutcome outcome = dynamoDB.getTable(configuration.getSkillGroupTableName())
+				.putItem(itemFromSkillGroup.apply(skillGroup));
 	}
 
 	private final Function<Item, SkillGroup> convertToSkillGroup = item -> {
@@ -82,4 +84,12 @@ public class ReferenceDynamoRepository implements ReferenceRepository {
 				.forEach(skillName -> skillGroup.getSkillSet().add(new Skill(skillName)));
 		return skillGroup;
 	};
+
+	private final Function<SkillGroup, Item> itemFromSkillGroup = skillGroup ->
+		new Item()
+				.withPrimaryKey("Name", skillGroup.getName())
+				.withStringSet("skills",
+						skillGroup.getSkillSet().stream()
+								.map(skill -> skill.getName())
+								.collect(Collectors.toSet()));
 }

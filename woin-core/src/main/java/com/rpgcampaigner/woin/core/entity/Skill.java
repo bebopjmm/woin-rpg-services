@@ -19,4 +19,17 @@ public class Skill {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Skill) {
+			return this.name.equalsIgnoreCase(((Skill)obj).getName());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
 }

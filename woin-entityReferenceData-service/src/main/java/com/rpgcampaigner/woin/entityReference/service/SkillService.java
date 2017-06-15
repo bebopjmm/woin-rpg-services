@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
@@ -75,10 +76,8 @@ public class SkillService {
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public SkillGroup createSkillGroup(final SkillGroupCreateDefinition definition) {
 		SkillGroup skillGroup = new SkillGroup(definition.getName());
-//		for (String addSkillName : definition.getSkills()) {
-//			skillGroup.getSkillSet().add(Optional.ofNullable(referenceRepository.getSkill(addSkillName))
-//					.orElse(createSkill.apply(addSkillName)));
-//		}
+		definition.getSkills().stream()
+				.forEach(s -> skillGroup.getSkillSet().add(new Skill(s)));
 		referenceRepository.createSkillGroup(skillGroup);
 		return skillGroup;
 	}
@@ -105,15 +104,12 @@ public class SkillService {
 
 		SkillGroup skillGroup = referenceRepository.getSkillGroup(name)
 				.orElseThrow(() -> new IllegalArgumentException("SkillGroup does not exist: " + name));
-
-//		for (String addSkillName : changes.getAddSkills()) {
-//			Optional.ofNullable(referenceRepository.getSkill(addSkillName))
-//					.ifPresent(skill -> skillGroup.getSkillSet().add(skill));
-//		}
-//		for (String removeSkillName : changes.getRemoveSkills()) {
-//			Optional.ofNullable(referenceRepository.getSkill(removeSkillName))
-//					.ifPresent(skill -> skillGroup.getSkillSet().remove(skill));
-//		}
+		Set<Skill> removals = skillGroup.getSkillSet().stream()
+				.filter(skill -> changes.getRemoveSkills().contains(skill.getName()))
+				.collect(Collectors.toSet());
+		skillGroup.getSkillSet().removeAll(removals);
+		changes.getAddSkills().stream()
+				.forEach(s -> skillGroup.getSkillSet().add(new Skill(s)));
 		referenceRepository.updateSkillGroup(skillGroup);
 		return skillGroup;
 	}
