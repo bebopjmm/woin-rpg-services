@@ -8,7 +8,6 @@ import java.util.function.Function;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
-import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.entityReference.model.NamedDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupCreateDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupUpdateDefinition;
@@ -24,12 +23,9 @@ import io.advantageous.qbit.annotation.RequestMethod;
 @RequestMapping("/woin/entityReference/skills")
 public class SkillService {
 
-	private ReferenceManager referenceManager;
-
 	private ReferenceRepository referenceRepository;
 
-	public SkillService(ReferenceManager referenceManager, ReferenceRepository referenceRepository) {
-		this.referenceManager = referenceManager;
+	public SkillService(ReferenceRepository referenceRepository) {
 		this.referenceRepository = referenceRepository;
 	}
 

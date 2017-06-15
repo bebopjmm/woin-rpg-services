@@ -7,7 +7,6 @@ import org.yaml.snakeyaml.Yaml;
 import com.rpgcampaigner.woin.entityReference.dal.DynamoConfiguration;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceDynamoRepository;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
-import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.entityReference.service.SkillService;
 
 import io.advantageous.qbit.server.EndpointServerBuilder;
@@ -26,9 +25,8 @@ public class Application {
 		DynamoConfiguration dynamoConfiguration = yaml.loadAs(is, DynamoConfiguration.class);
 
 		ReferenceRepository referenceRepository = new ReferenceDynamoRepository(dynamoConfiguration);
-		ReferenceManager referenceManager = new ReferenceManager(referenceRepository);
 		ServiceEndpointServer server = new EndpointServerBuilder().build();
-		server.initServices(new SkillService(referenceManager, referenceRepository));
+		server.initServices(new SkillService(referenceRepository));
 		server.start();
 	}
 }
