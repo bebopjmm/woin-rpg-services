@@ -1,8 +1,11 @@
 package com.rpgcampaigner.woin.entityReference;
 
-import com.rpgcampaigner.woin.entityReference.dal.CouchbaseConfiguration;
+import java.io.InputStream;
+
+import org.yaml.snakeyaml.Yaml;
+
 import com.rpgcampaigner.woin.entityReference.dal.DynamoConfiguration;
-import com.rpgcampaigner.woin.entityReference.dal.ReferenceCouchbaseRepository;
+import com.rpgcampaigner.woin.entityReference.dal.ReferenceDynamoRepository;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.entityReference.service.SkillService;
@@ -17,10 +20,12 @@ import io.advantageous.qbit.server.ServiceEndpointServer;
 public class Application {
 
 	public static void main(String[] args) throws Exception {
-		CouchbaseConfiguration couchbaseConfiguration = new CouchbaseConfiguration("localhost", "woin-reference");
-		DynamoConfiguration dynamoConfiguration = new DynamoConfiguration("woin-reference");
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		InputStream is = classLoader.getResourceAsStream("dynamoConfig.yaml");
+		Yaml yaml = new Yaml();
+		DynamoConfiguration dynamoConfiguration = yaml.loadAs(is, DynamoConfiguration.class);
 
-		ReferenceRepository referenceRepository = new ReferenceCouchbaseRepository(couchbaseConfiguration.getReferenceBucket());
+		ReferenceRepository referenceRepository = new ReferenceDynamoRepository(dynamoConfiguration);
 		ReferenceManager referenceManager = new ReferenceManager(referenceRepository);
 		ServiceEndpointServer server = new EndpointServerBuilder().build();
 		server.initServices(new SkillService(referenceManager, referenceRepository));

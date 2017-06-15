@@ -4,7 +4,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import com.rpgcampaigner.woin.entityReference.dal.ReferenceCouchbaseRepository;
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;

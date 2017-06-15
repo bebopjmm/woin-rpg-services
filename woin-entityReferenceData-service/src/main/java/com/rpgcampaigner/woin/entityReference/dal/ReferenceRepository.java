@@ -1,5 +1,6 @@
 package com.rpgcampaigner.woin.entityReference.dal;
 
+import java.util.Optional;
 import java.util.Set;
 
 import com.rpgcampaigner.woin.core.entity.Skill;
@@ -12,7 +13,7 @@ import com.rpgcampaigner.woin.core.entity.SkillGroup;
 public interface ReferenceRepository {
 	Set<SkillGroup> getAllSkillGroups();
 
-	SkillGroup getSkillGroup(String name);
+	Optional<SkillGroup> getSkillGroup(String name);
 
 	Set<Skill> getAllSkills();
 

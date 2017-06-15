@@ -1,25 +1,28 @@
 package com.rpgcampaigner.woin.entityReference.dal;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Table;
-
 /**
  * @author jmccormick
  * @since 6/14/17
  */
 public class DynamoConfiguration {
-	private static final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
-	private static final DynamoDB dynamoDB = new DynamoDB(client);
 
-	private final String referenceTable;
+	private String skillGroupTableName;
 
-	public DynamoConfiguration(String referenceTable) {
-		this.referenceTable = referenceTable;
+	private String region;
+
+	public String getSkillGroupTableName() {
+		return skillGroupTableName;
 	}
 
-	public Table referenceTable() {
-		return dynamoDB.getTable(this.referenceTable);
+	public void setSkillGroupTableName(String skillGroupTableName) {
+		this.skillGroupTableName = skillGroupTableName;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
 	}
 }

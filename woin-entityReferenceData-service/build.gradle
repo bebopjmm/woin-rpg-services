@@ -23,6 +23,7 @@ dependencies {
     compile 'io.advantageous.qbit:qbit-vertx:1.10.0.RELEASE'
     compile('com.couchbase.client:java-client:2.4.3')
     compile 'com.amazonaws:aws-java-sdk-dynamodb'
+    compile 'org.yaml:snakeyaml:1.18'
     testCompile 'junit:junit:4.11'
 }
 

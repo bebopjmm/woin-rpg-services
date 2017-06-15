@@ -5,14 +5,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import com.rpgcampaigner.woin.entityReference.dal.ReferenceCouchbaseRepository;
+import com.rpgcampaigner.woin.core.entity.Skill;
+import com.rpgcampaigner.woin.core.entity.SkillGroup;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.entityReference.domain.ReferenceManager;
 import com.rpgcampaigner.woin.entityReference.model.NamedDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupCreateDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupUpdateDefinition;
-import com.rpgcampaigner.woin.core.entity.Skill;
-import com.rpgcampaigner.woin.core.entity.SkillGroup;
 
 import io.advantageous.qbit.annotation.PathVariable;
 import io.advantageous.qbit.annotation.RequestMapping;
@@ -56,7 +55,7 @@ public class SkillService {
 	public Skill getSkill(@PathVariable("skillName") String name) {
 		Skill result = Optional.ofNullable(referenceRepository.getSkill(name))
 				.orElseThrow(() -> new IllegalArgumentException("Skill does not exist: " + name));
-		System.out.println ("Found skill with name = " + result.getName());
+		System.out.println("Found skill with name = " + result.getName());
 		return result;
 	}
 
@@ -95,9 +94,9 @@ public class SkillService {
 
 	@RequestMapping(value = "/groups/{name}", method = RequestMethod.GET)
 	public SkillGroup getSkillGroup(@PathVariable("name") String name) {
-		SkillGroup result = Optional.ofNullable(referenceRepository.getSkillGroup(name))
+		SkillGroup result = referenceRepository.getSkillGroup(name)
 				.orElseThrow(() -> new IllegalArgumentException("SkillGroup does not exist: " + name));
-		System.out.println ("Found skillGroup with name = " + result.getName());
+		System.out.println("Found skillGroup with name = " + result.getName());
 		return result;
 	}
 
@@ -108,7 +107,7 @@ public class SkillService {
 		Objects.requireNonNull(name);
 		Objects.requireNonNull(changes);
 
-		SkillGroup skillGroup = Optional.ofNullable(referenceRepository.getSkillGroup(name))
+		SkillGroup skillGroup = referenceRepository.getSkillGroup(name)
 				.orElseThrow(() -> new IllegalArgumentException("SkillGroup does not exist: " + name));
 
 		for (String addSkillName : changes.getAddSkills()) {
