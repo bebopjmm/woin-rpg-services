@@ -10,6 +10,11 @@ repositories {
     mavenCentral()
 }
 
+allprojects {
+    task hello {
+        doLast{task -> println "Finished $task.project.name"}
+    }
+}
 subprojects {
     apply plugin: 'java'
 
