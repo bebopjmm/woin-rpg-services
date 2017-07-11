@@ -1,3 +1,5 @@
 .idea/
 .gradle/
 **build/
+lib
+**bin/woin-StarSystemService*
