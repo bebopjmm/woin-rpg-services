@@ -6,7 +6,7 @@ applicationName = 'woin-StarSystemService'
 dependencies {
     compile project(':woin-core')
     compile libraries.qbit
-    compile libraries.logging
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile 'org.yaml:snakeyaml:1.18'
     testCompile 'junit:junit:4.11'
 }
