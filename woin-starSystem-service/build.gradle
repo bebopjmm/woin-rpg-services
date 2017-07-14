@@ -13,19 +13,18 @@ dependencies {
 
 def installOptDir = "/image/opt/woin-StarSystemService"
 
-def dockerImageName = "woin-rpg-service/starsystemservice:$version"
-
 task copyDistToImage(dependsOn: 'installDist', type: Copy) {
     from "$buildDir/install/woin-StarSystemService"
     into "$projectDir/image/opt/woin-StarSystemService"
 }
 
 task buildDockerImage (dependsOn: 'copyDistToImage', type: Exec) {
-    commandLine "docker", "build", "-t", "woin-rpg-service/starsystemservice:$version", "./image"
+    ext.imageName = "woin-rpg-service/starsystemservice:$version"
+    commandLine "docker", "build", "-t", "$imageName", "./image"
 }
 
 task runDocker (dependsOn: 'buildDockerImage', type: Exec) {
-    commandLine "docker", "run", "-d", "-p", "4000:8080", "-t", "woin-rpg-service/starsystemservice:$version"
+    commandLine "docker", "run", "-d", "-p", "4000:8080", "-t", buildDockerImage.imageName
 }
 
 // TODO clean should delete the image/opt directory
