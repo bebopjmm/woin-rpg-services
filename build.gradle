@@ -11,6 +11,8 @@ repositories {
 }
 
 allprojects {
+    version = "1.0-SNAPSHOT"
+
     task hello {
         doLast{task -> println "Finished $task.project.name"}
     }
