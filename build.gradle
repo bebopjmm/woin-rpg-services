@@ -10,6 +10,13 @@ repositories {
     mavenCentral()
 }
 
+allprojects {
+    version = "1.0-SNAPSHOT"
+
+    task hello {
+        doLast{task -> println "Finished $task.project.name"}
+    }
+}
 subprojects {
     apply plugin: 'java'
 
@@ -17,3 +24,11 @@ subprojects {
         mavenCentral()
     }
 }
+
+// Common libraries used across modules
+ext.libraries = [
+        qbit: [
+                'io.advantageous.qbit:qbit-admin:1.10.0.RELEASE',
+                'io.advantageous.qbit:qbit-vertx:1.10.0.RELEASE'
+        ]
+]
