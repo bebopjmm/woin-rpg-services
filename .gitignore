@@ -1,7 +1,9 @@
 .idea/
 .gradle/
-**build/
+**build
 lib
+woin-entityReferenceData-service/image/opt/woin-EntityReferenceService/bin/woin-EntityReferenceService
+woin-entityReferenceData-service/image/opt/woin-EntityReferenceService/bin/woin-EntityReferenceService.bat
 woin-starSystem-service/image/opt/woin-StarSystemService/bin/woin-StarSystemService
 woin-starSystem-service/image/opt/woin-StarSystemService/bin/woin-StarSystemService.bat
 
