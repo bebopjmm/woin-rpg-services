@@ -1,3 +1,7 @@
 .idea/
 .gradle/
 **build/
+lib
+woin-starSystem-service/image/opt/woin-StarSystemService/bin/woin-StarSystemService
+woin-starSystem-service/image/opt/woin-StarSystemService/bin/woin-StarSystemService.bat
+

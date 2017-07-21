@@ -17,7 +17,7 @@ import io.advantageous.qbit.annotation.RequestMethod;
  * @author jmccormick
  * @since 5/15/17
  */
-@RequestMapping("/woin/starSystem")
+@RequestMapping("/starSystem")
 public class StarSystemService {
 
 	private static Set<SpectralTypeDefinition> spectralTypeDefinitions = new HashSet<>();

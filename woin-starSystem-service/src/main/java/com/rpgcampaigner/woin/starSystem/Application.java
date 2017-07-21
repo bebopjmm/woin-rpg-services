@@ -8,7 +8,7 @@ import com.rpgcampaigner.woin.starSystem.domain.StarSystemGenerator;
 import com.rpgcampaigner.woin.starSystem.domain.StarSystemGeneratorConfig;
 import com.rpgcampaigner.woin.starSystem.service.StarSystemService;
 
-import io.advantageous.qbit.server.EndpointServerBuilder;
+import io.advantageous.qbit.admin.ManagedServiceBuilder;
 import io.advantageous.qbit.server.ServiceEndpointServer;
 
 /**
@@ -25,9 +25,14 @@ public class Application {
 		StarSystemGenerator systemGenerator = new StarSystemGenerator(starSystemGeneratorConfig);
 
 		// Build and start the server
-		ServiceEndpointServer server = new EndpointServerBuilder().build();
-		server.initServices(new StarSystemService(systemGenerator));
-		server.start();
+		final ManagedServiceBuilder managedServiceBuilder = ManagedServiceBuilder.managedServiceBuilder();
+		final ServiceEndpointServer server = managedServiceBuilder.getEndpointServerBuilder()
+				.setUri("/woin").build()
+				.initServices(new StarSystemService(systemGenerator))
+				.startServer();
+
+		// Wait for service to shutdown
+		managedServiceBuilder.getSystemManager().waitForShutdown();
 	}
 
 }

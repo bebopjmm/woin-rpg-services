@@ -1,12 +1,30 @@
 apply plugin: 'application'
 
-mainClassName = "com.rpgcampaigner.woin.starSystem.Application"
+mainClassName = 'com.rpgcampaigner.woin.starSystem.Application'
+applicationName = 'woin-StarSystemService'
 
 dependencies {
     compile project(':woin-core')
-    compile 'io.advantageous.qbit:qbit-admin:1.10.0.RELEASE'
-    compile 'io.advantageous.qbit:qbit-vertx:1.10.0.RELEASE'
+    compile libraries.qbit
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile 'org.yaml:snakeyaml:1.18'
-//    compile('com.couchbase.client:java-client:2.4.3')
     testCompile 'junit:junit:4.11'
 }
+
+def installOptDir = "/image/opt/woin-StarSystemService"
+
+task copyDistToImage(dependsOn: 'installDist', type: Copy) {
+    from "$buildDir/install/woin-StarSystemService"
+    into "$projectDir/image/opt/woin-StarSystemService"
+}
+
+task buildDockerImage (dependsOn: 'copyDistToImage', type: Exec) {
+    ext.imageName = "woin-rpg-service/starsystemservice:$version"
+    commandLine "docker", "build", "-t", "$imageName", "./image"
+}
+
+task runDocker (dependsOn: 'buildDockerImage', type: Exec) {
+    commandLine "docker", "run", "-d", "-p", "4000:8080", "-t", buildDockerImage.imageName
+}
+
+// TODO clean should delete the image/opt directory

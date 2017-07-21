@@ -5,7 +5,20 @@ group = "woin-rpg-services"
 
 sourceCompatibility = 1.8
 
+repositories {
+    mavenCentral()
+}
+
 allprojects {
+    apply plugin: 'java'
+
+    version = "1.0-SNAPSHOT"
+
+    task hello {
+        doLast{task -> println "Finished $task.project.name"}
+    }
+}
+subprojects {
     apply plugin: 'java'
 
     repositories {
@@ -13,6 +26,10 @@ allprojects {
     }
 }
 
-subprojects {
-    version = '1.0-SNAPSHOT'
-}
+// Common libraries used across modules
+ext.libraries = [
+        qbit: [
+                'io.advantageous.qbit:qbit-admin:1.10.0.RELEASE',
+                'io.advantageous.qbit:qbit-vertx:1.10.0.RELEASE'
+        ]
+]
