@@ -9,6 +9,7 @@ import com.rpgcampaigner.woin.entityReference.dal.ReferenceDynamoRepository;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
 import com.rpgcampaigner.woin.entityReference.service.SkillService;
 
+import io.advantageous.qbit.admin.ManagedServiceBuilder;
 import io.advantageous.qbit.server.EndpointServerBuilder;
 import io.advantageous.qbit.server.ServiceEndpointServer;
 
@@ -25,8 +26,15 @@ public class Application {
 		DynamoConfiguration dynamoConfiguration = yaml.loadAs(is, DynamoConfiguration.class);
 
 		ReferenceRepository referenceRepository = new ReferenceDynamoRepository(dynamoConfiguration);
-		ServiceEndpointServer server = new EndpointServerBuilder().build();
-		server.initServices(new SkillService(referenceRepository));
-		server.start();
+
+		// Build and start the server
+		final ManagedServiceBuilder managedServiceBuilder = ManagedServiceBuilder.managedServiceBuilder();
+		final ServiceEndpointServer server = managedServiceBuilder.getEndpointServerBuilder()
+				.setUri("/woin").build()
+				.initServices(new SkillService(referenceRepository))
+				.startServer();
+
+		// Wait for service to shutdown
+		managedServiceBuilder.getSystemManager().waitForShutdown();
 	}
 }

@@ -1,15 +1,12 @@
 package com.rpgcampaigner.woin.entityReference.service;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.rpgcampaigner.woin.core.entity.Skill;
 import com.rpgcampaigner.woin.core.entity.SkillGroup;
 import com.rpgcampaigner.woin.entityReference.dal.ReferenceRepository;
-import com.rpgcampaigner.woin.entityReference.model.NamedDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupCreateDefinition;
 import com.rpgcampaigner.woin.entityReference.model.SkillGroupUpdateDefinition;
 
@@ -21,7 +18,7 @@ import io.advantageous.qbit.annotation.RequestMethod;
  * @author jmccormick
  * @since 3/14/17
  */
-@RequestMapping("/woin/entityReference/skills")
+@RequestMapping("/entityReference/skills")
 public class SkillService {
 
 	private ReferenceRepository referenceRepository;
