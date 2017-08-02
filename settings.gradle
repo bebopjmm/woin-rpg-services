@@ -1,4 +1,6 @@
-include ':woin-core'
-include ':woin-entityReferenceData-service'
-include ':woin-starSystem-service'
+rootProject.name = 'woin-rpg-services'
+
+include 'woin-core'
+include 'woin-entityReferenceData-service'
+include 'woin-starSystem-service'
 

@@ -1,0 +1,4 @@
+# Configuration for DynamoDB Tables
+---
+region: US_WEST_1
+skillGroupTableName:  SkillGroup

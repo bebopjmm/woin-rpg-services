@@ -1,14 +1,46 @@
 apply plugin: 'application'
 
-mainClassName = "com.rpgcampaigner.woin.entityReference.Application"
+mainClassName = 'com.rpgcampaigner.woin.entityReference.Application'
+applicationName = 'woin-EntityReferenceService'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
+    }
+}
+apply plugin: "io.spring.dependency-management"
+dependencyManagement {
+    imports {
+        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.147'
+    }
+}
 
 dependencies {
     compile project(':woin-core')
-    compile 'io.advantageous.qbit:qbit-admin:1.10.0.RELEASE'
-    compile 'io.advantageous.qbit:qbit-vertx:1.10.0.RELEASE'
-//    compile('org.springframework.boot:spring-boot-starter-web:1.5.1.RELEASE') {
-//        exclude module: 'spring-boot-starter-tomcat'
-//    }
+    compile libraries.qbit
     compile('com.couchbase.client:java-client:2.4.3')
+    compile 'com.amazonaws:aws-java-sdk-dynamodb'
+    compile 'org.yaml:snakeyaml:1.18'
     testCompile 'junit:junit:4.11'
 }
+
+task copyDistToImage(dependsOn: 'installDist', type: Copy) {
+    from "$buildDir/install/woin-EntityReferenceService"
+    into "$projectDir/image/opt/woin-EntityReferenceService"
+}
+
+task buildDockerImage (dependsOn: 'copyDistToImage', type: Exec) {
+    ext.imageName = "woin-rpg-services/entityreference:$version"
+    commandLine "docker", "build", "-t", "$imageName", "./image"
+}
+
+task runDocker (dependsOn: 'buildDockerImage', type: Exec) {
+    commandLine "docker", "run", "-d", "-p", "4000:8080", "-t", buildDockerImage.imageName
+}
+
+
+
+
