@@ -33,7 +33,7 @@ task copyDistToImage(dependsOn: 'installDist', type: Copy) {
 }
 
 task buildDockerImage (dependsOn: 'copyDistToImage', type: Exec) {
-    ext.imageName = "woin-rpg-service/entityreferenceservice:$version"
+    ext.imageName = "woin-rpg-services/entityreference:$version"
     commandLine "docker", "build", "-t", "$imageName", "./image"
 }
 
